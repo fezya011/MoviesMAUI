@@ -1,10 +1,287 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FitnessMAUI.MainPage">
+             x:Class="FitnessMAUI.MainPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#2C3E50</Color>
+            <Color x:Key="SecondaryColor">#E74C3C</Color>
+            <Color x:Key="AccentColor">#3498DB</Color>
+            <Color x:Key="TextPrimary">#FFFFFF</Color>
+            <Color x:Key="TextSecondary">#BDC3C7</Color>
+            <Color x:Key="CardBackground">#34495E</Color>
+            <Color x:Key="PageBackgroundColor">#1A1A2E</Color>
+
+            <Style x:Key="TitleText" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style x:Key="SectionTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="0,20,0,10"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
-        
+        <StackLayout Spacing="0">
+            <!-- Header -->
+            <Grid BackgroundColor="{StaticResource PrimaryColor}" 
+                  HeightRequest="60"
+                  Padding="15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Kinopoisk Pro" 
+                       Style="{StaticResource TitleText}"
+                       VerticalOptions="Center"/>
+
+                <ImageButton Grid.Column="1"
+                           Source="user_icon.png"
+                           BackgroundColor="Transparent"
+                           HeightRequest="35"
+                           WidthRequest="35"
+                           VerticalOptions="Center"/>
+            </Grid>
+
+            <!-- Search Bar -->
+            <Frame Margin="15,20,15,10"
+                   BackgroundColor="{StaticResource CardBackground}"
+                   CornerRadius="25"
+                   HasShadow="True"
+                   Padding="0">
+                <Grid ColumnSpacing="10" Padding="15,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="search_icon.png"
+                           HeightRequest="20"
+                           WidthRequest="20"
+                           VerticalOptions="Center"/>
+
+                    <Entry Grid.Column="1"
+                           Placeholder="Поиск фильмов, сериалов, актеров..."
+                           PlaceholderColor="{StaticResource TextSecondary}"
+                           TextColor="{StaticResource TextPrimary}"
+                           BackgroundColor="Transparent"
+                           
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Frame>
+
+            <!-- Categories -->
+            <ScrollView Orientation="Horizontal" 
+                       HorizontalScrollBarVisibility="Never"
+                       Margin="15,10">
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Frame BackgroundColor="{StaticResource SecondaryColor}"
+                           CornerRadius="20"
+                           Padding="20,10">
+                        <Label Text="Все" TextColor="White" FontSize="14"/>
+                    </Frame>
+
+                    <Frame BackgroundColor="{StaticResource CardBackground}"
+                           CornerRadius="20"
+                           Padding="20,10">
+                        <Label Text="Фильмы" TextColor="{StaticResource TextSecondary}" FontSize="14"/>
+                    </Frame>
+
+                    <Frame BackgroundColor="{StaticResource CardBackground}"
+                           CornerRadius="20"
+                           Padding="20,10">
+                        <Label Text="Сериалы" TextColor="{StaticResource TextSecondary}" FontSize="14"/>
+                    </Frame>
+
+                    <Frame BackgroundColor="{StaticResource CardBackground}"
+                           CornerRadius="20"
+                           Padding="20,10">
+                        <Label Text="ТВ шоу" TextColor="{StaticResource TextSecondary}" FontSize="14"/>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+
+            <!-- Popular Movies Carousel -->
+            <Label Text="Популярные сейчас" 
+                   Style="{StaticResource SectionTitle}"
+                   Margin="15,20,15,0"/>
+
+            <CarouselView Margin="15,10" 
+                         HeightRequest="280"
+                         ItemsSource="{Binding PopularMovies}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="Transparent" 
+                               Padding="0"
+                               HasShadow="True">
+                            <Grid RowSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Frame Grid.Row="0"
+                                       BackgroundColor="{StaticResource CardBackground}"
+                                       CornerRadius="15"
+                                       Padding="0"
+                                       HeightRequest="200">
+                                    <Image Source="{Binding ImageUrl}"
+                                           Aspect="AspectFill"
+                                           BackgroundColor="{StaticResource CardBackground}"/>
+
+                                   
+                                </Frame>
+
+                                <!-- Rating Badge -->
+                                <Frame Grid.Row="0"
+                                       BackgroundColor="{StaticResource SecondaryColor}"
+                                       CornerRadius="10"
+                                       Padding="8,4"
+                                       HorizontalOptions="Start"
+                                       VerticalOptions="Start"
+                                       Margin="10">
+                                    <Label Text="{Binding Rating}" 
+                                           TextColor="White" 
+                                           FontSize="12"
+                                           FontAttributes="Bold"/>
+                                </Frame>
+
+                                <!-- Movie Info -->
+                                <StackLayout Grid.Row="1" Spacing="2" Margin="5,0">
+                                    <Label Text="{Binding Title}" 
+                                           TextColor="{StaticResource TextPrimary}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           LineBreakMode="TailTruncation"/>
+
+                                    <Label Text="{Binding Genres}" 
+                                           TextColor="{StaticResource TextSecondary}"
+                                           FontSize="12"
+                                           LineBreakMode="TailTruncation"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+            <!-- Coming Soon -->
+            <Label Text="Скоро выйдет" 
+                   Style="{StaticResource SectionTitle}"
+                   Margin="15,20,15,0"/>
+
+            <CollectionView ItemsSource="{Binding ComingSoonMovies}"
+                           Margin="15,10"
+                           SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="15"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid WidthRequest="120" HeightRequest="180">
+                            <Frame BackgroundColor="{StaticResource CardBackground}"
+                                   CornerRadius="15"
+                                   Padding="0">
+                                <Image Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"/>
+
+                               
+                            </Frame>
+
+                            <!-- Release Date -->
+                            <Frame BackgroundColor="{StaticResource AccentColor}"
+                                   CornerRadius="10"
+                                   Padding="8,4"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="End"
+                                   Margin="0,0,0,10">
+                                <Label Text="{Binding ReleaseDate}" 
+                                       TextColor="White" 
+                                       FontSize="10"
+                                       FontAttributes="Bold"/>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Top Rated -->
+            <Label Text="Лучшие фильмы" 
+                   Style="{StaticResource SectionTitle}"
+                   Margin="15,20,15,0"/>
+
+            <CollectionView ItemsSource="{Binding TopRatedMovies}"
+                           Margin="15,10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnSpacing="15" 
+                              HeightRequest="100"
+                              Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Movie Poster -->
+                            <Frame Grid.Column="0"
+                                   BackgroundColor="{StaticResource CardBackground}"
+                                   CornerRadius="10"
+                                   Padding="0"
+                                   HeightRequest="90"
+                                   WidthRequest="60">
+                                <Image Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"/>
+                            </Frame>
+
+                            <!-- Movie Info -->
+                            <StackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                <Label Text="{Binding Title}" 
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="TailTruncation"/>
+
+                                <Label Text="{Binding Genres}" 
+                                       TextColor="{StaticResource TextSecondary}"
+                                       FontSize="12"
+                                       LineBreakMode="TailTruncation"/>
+
+                                <Label Text="{Binding Year}" 
+                                       TextColor="{StaticResource TextSecondary}"
+                                       FontSize="12"/>
+                            </StackLayout>
+
+                            <!-- Rating -->
+                            <StackLayout Grid.Column="2" 
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="End">
+                                <Frame BackgroundColor="{StaticResource SecondaryColor}"
+                                       CornerRadius="8"
+                                       Padding="10,5">
+                                    <Label Text="{Binding Rating}" 
+                                           TextColor="White" 
+                                           FontSize="14"
+                                           FontAttributes="Bold"/>
+                                </Frame>
+                            </StackLayout>
+
+                            
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
     </ScrollView>
 
 </ContentPage>
