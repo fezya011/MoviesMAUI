@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="FitnessMAUI.NewPage1"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Добавить фильм">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <Label Text="Добавить новый фильм"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Название фильма *" />
+                <Entry
+                    Placeholder="Введите название фильма"
+                    Text="{Binding AddMovie.Title}"/>
+            </VerticalStackLayout>
+
+ 
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Рейтинг" />
+                <Entry 
+                       Placeholder="0-10"
+                       Keyboard="Numeric" 
+                       Text="{Binding AddMovie.Rating}"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Жанр" />
+                <Entry  
+                       Placeholder="Например: Драма, Комедия, Фантастика" 
+                       Text="{Binding AddMovie.Genre}"/>
+            </VerticalStackLayout>
+
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Студия" />
+                <Entry x:Name="StudioEntry" 
+                       Placeholder="Название студии" />
+            </VerticalStackLayout>
+
+  
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Дата релиза" />
+                <DatePicker Date="{Binding AddMovie.ReleaseDate}"
+                    />
+            </VerticalStackLayout>
+
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Постер фильма" />
+
+
+                <Frame HeightRequest="200" 
+                       WidthRequest="150" 
+                       HorizontalOptions="Center"
+                       Padding="0"
+                       BackgroundColor="LightGray">
+                    <Image x:Name="MovieImage" 
+                           Aspect="AspectFill" />
+                </Frame>
+
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Button Text="Выбрать фото" 
+                            x:Name="SelectImageButton" />
+                    <Button Text="Сделать фото" 
+                            x:Name="TakePhotoButton" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button
+                        Text="Сохранить" 
+                        Grid.Column="0"
+                        BackgroundColor="RoyalBlue"
+                        TextColor="White" 
+                   Clicked="SaveClick"/>
+
+                <Button x:Name="CancelButton" 
+                        Text="Отмена" 
+                        Grid.Column="1"
+                        BackgroundColor="LightGray" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

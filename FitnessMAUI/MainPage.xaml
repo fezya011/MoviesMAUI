@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FitnessMAUI.MainPage"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="{DynamicResource PageBackgroundColor}" >
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -32,7 +32,6 @@
 
     <ScrollView>
         <StackLayout Spacing="0">
-            <!-- Header -->
             <Grid BackgroundColor="{StaticResource PrimaryColor}" 
                   HeightRequest="60"
                   Padding="15,0">
@@ -41,19 +40,18 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Kinopoisk Pro" 
+                <Label Text="Kinopoisk" 
                        Style="{StaticResource TitleText}"
                        VerticalOptions="Center"/>
 
                 <ImageButton Grid.Column="1"
-                           Source="user_icon.png"
+                           
                            BackgroundColor="Transparent"
                            HeightRequest="35"
                            WidthRequest="35"
                            VerticalOptions="Center"/>
             </Grid>
 
-            <!-- Search Bar -->
             <Frame Margin="15,20,15,10"
                    BackgroundColor="{StaticResource CardBackground}"
                    CornerRadius="25"
@@ -77,41 +75,19 @@
                            BackgroundColor="Transparent"
                            
                            VerticalOptions="Center"/>
+                    <Button Grid.Column="2"
+                            Text="+"
+                            Clicked="OpenAddMoviePage"
+                            BackgroundColor="{StaticResource AccentColor}"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"
+                            />         
                 </Grid>
             </Frame>
 
-            <!-- Categories -->
-            <ScrollView Orientation="Horizontal" 
-                       HorizontalScrollBarVisibility="Never"
-                       Margin="15,10">
-                <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Frame BackgroundColor="{StaticResource SecondaryColor}"
-                           CornerRadius="20"
-                           Padding="20,10">
-                        <Label Text="Все" TextColor="White" FontSize="14"/>
-                    </Frame>
-
-                    <Frame BackgroundColor="{StaticResource CardBackground}"
-                           CornerRadius="20"
-                           Padding="20,10">
-                        <Label Text="Фильмы" TextColor="{StaticResource TextSecondary}" FontSize="14"/>
-                    </Frame>
-
-                    <Frame BackgroundColor="{StaticResource CardBackground}"
-                           CornerRadius="20"
-                           Padding="20,10">
-                        <Label Text="Сериалы" TextColor="{StaticResource TextSecondary}" FontSize="14"/>
-                    </Frame>
-
-                    <Frame BackgroundColor="{StaticResource CardBackground}"
-                           CornerRadius="20"
-                           Padding="20,10">
-                        <Label Text="ТВ шоу" TextColor="{StaticResource TextSecondary}" FontSize="14"/>
-                    </Frame>
-                </StackLayout>
-            </ScrollView>
-
-            <!-- Popular Movies Carousel -->
             <Label Text="Популярные сейчас" 
                    Style="{StaticResource SectionTitle}"
                    Margin="15,20,15,0"/>
@@ -142,7 +118,7 @@
                                    
                                 </Frame>
 
-                                <!-- Rating Badge -->
+
                                 <Frame Grid.Row="0"
                                        BackgroundColor="{StaticResource SecondaryColor}"
                                        CornerRadius="10"
@@ -156,7 +132,6 @@
                                            FontAttributes="Bold"/>
                                 </Frame>
 
-                                <!-- Movie Info -->
                                 <StackLayout Grid.Row="1" Spacing="2" Margin="5,0">
                                     <Label Text="{Binding Title}" 
                                            TextColor="{StaticResource TextPrimary}"
@@ -175,7 +150,7 @@
                 </CarouselView.ItemTemplate>
             </CarouselView>
 
-            <!-- Coming Soon -->
+
             <Label Text="Скоро выйдет" 
                    Style="{StaticResource SectionTitle}"
                    Margin="15,20,15,0"/>
@@ -198,7 +173,7 @@
                                
                             </Frame>
 
-                            <!-- Release Date -->
+
                             <Frame BackgroundColor="{StaticResource AccentColor}"
                                    CornerRadius="10"
                                    Padding="8,4"
@@ -215,7 +190,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Top Rated -->
+
             <Label Text="Лучшие фильмы" 
                    Style="{StaticResource SectionTitle}"
                    Margin="15,20,15,0"/>
@@ -233,7 +208,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Movie Poster -->
+
                             <Frame Grid.Column="0"
                                    BackgroundColor="{StaticResource CardBackground}"
                                    CornerRadius="10"
@@ -244,7 +219,7 @@
                                        Aspect="AspectFill"/>
                             </Frame>
 
-                            <!-- Movie Info -->
+
                             <StackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
                                 <Label Text="{Binding Title}" 
                                        TextColor="{StaticResource TextPrimary}"
@@ -262,7 +237,6 @@
                                        FontSize="12"/>
                             </StackLayout>
 
-                            <!-- Rating -->
                             <StackLayout Grid.Column="2" 
                                        VerticalOptions="Center"
                                        HorizontalOptions="End">

@@ -1,93 +1,85 @@
-﻿using FitnessMAUI.ViewModel;
+﻿using FitnessMAUI.Model;
+using FitnessMAUI.db;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace FitnessMAUI
 {
     public partial class MainPage : ContentPage
     {
-        public ObservableCollection<Movie2> PopularMovies { get; set; }
-        public ObservableCollection<Movie2> ComingSoonMovies { get; set; }
-        public ObservableCollection<Movie2> TopRatedMovies { get; set; }
+        DB dB;
+        public ObservableCollection<Movie> PopularMovies { get; set; }
+        public ObservableCollection<Movie> ComingSoonMovies { get; set; }
+        public ObservableCollection<Movie> TopRatedMovies { get; set; }
 
         public ICommand MovieTappedCommand { get; }
-
+       
         public MainPage()
         {
             InitializeComponent();
+            MovieTappedCommand = new Command<Movie>(OnMovieTapped);
+            
+            DB.Instance.InitializeAsync();
 
-            MovieTappedCommand = new Command<Movie2>(OnMovieTapped);
+            Load();
 
-            LoadSampleData();
-            BindingContext = this;
+           
         }
 
-        private void LoadSampleData()
+        public void Load()
         {
-            // Популярные фильмы
-            PopularMovies = new ObservableCollection<Movie2>
+            PopularMovies = new ObservableCollection<Movie>
             {
-                new Movie2
+                new Movie
                 {
                     Title = "Довод",
                     Rating = "8.1",
                     Genres = "Боевик, Фантастика",
-                    ImageUrl = "movie1.jpg",
-                    Year = "2020"
+                    ImageUrl = "123.jpg",
                 },
-                new Movie2
+                new Movie
                 {
                     Title = "Интерстеллар",
                     Rating = "8.6",
                     Genres = "Фантастика, Драма",
-                    ImageUrl = "movie2.jpg",
-                    Year = "2014"
+                    ImageUrl = "123.jpg",
                 },
-                new Movie2
+                new Movie
                 {
                     Title = "Начало",
                     Rating = "8.7",
                     Genres = "Фантастика, Боевик",
-                    ImageUrl = "movie3.jpg",
-                    Year = "2010"
+                    ImageUrl = "123.jpg",
                 }
             };
 
-            // Скоро выйдет
-            ComingSoonMovies = new ObservableCollection<Movie2>
+            ComingSoonMovies = new ObservableCollection<Movie>
             {
-                new Movie2 { Title = "Аватар 3", ReleaseDate = "15 дек", ImageUrl = "avatar3.jpg" },
-                new Movie2 { Title = "Миссия невыполнима", ReleaseDate = "20 янв", ImageUrl = "mission.jpg" },
-                new Movie2 { Title = "Дюна 2", ReleaseDate = "5 фев", ImageUrl = "dune2.jpg" }
+                new Movie { Title = "Аватар 3", ImageUrl = "123.jpg", },
+                new Movie { Title = "Миссия невыполнима", ImageUrl = "123.jpg",  },
+                new Movie { Title = "Дюна 2", ImageUrl = "123.jpg", }
             };
 
-            // Лучшие фильмы
-            TopRatedMovies = new ObservableCollection<Movie2>
+            TopRatedMovies = new ObservableCollection<Movie>
             {
-                new Movie2 { Title = "Побег из Шоушенка", Rating = "9.1", Year = "1994", Genres = "Драма", ImageUrl = "shawshank.jpg" },
-                new Movie2 { Title = "Крестный отец", Rating = "9.0", Year = "1972", Genres = "Драма, Криминал", ImageUrl = "godfather.jpg" },
-                new Movie2 { Title = "Темный рыцарь", Rating = "8.9", Year = "2008", Genres = "Боевик, Драма", ImageUrl = "darkknight.jpg" }
+                new Movie { Title = "Побег из Шоушенка", Rating = "9.1", Genres = "Драма", ImageUrl = "123.jpg",  },
+                new Movie { Title = "Крестный отец", Rating = "9.0",  Genres = "Драма, Криминал", ImageUrl = "123.jpg", },
+                new Movie { Title = "Темный рыцарь", Rating = "8.9",  Genres = "Боевик, Драма", ImageUrl = "123.jpg", }
             };
         }
 
-        private async void OnMovieTapped(Movie2 movie)
+        private async void OnMovieTapped(Movie movie)
         {
             if (movie != null)
             {
                 await DisplayAlert("Фильм выбран", $"Вы выбрали: {movie.Title}", "OK");
-                // Здесь можно перейти на страницу деталей фильма
-                // await Navigation.PushAsync(new MovieDetailPage(movie));
             }
         }
-    }
 
-    public class Movie2
-    {
-        public string Title { get; set; }
-        public string Rating { get; set; }
-        public string Genres { get; set; }
-        public string ImageUrl { get; set; }
-        public string Year { get; set; }
-        public string ReleaseDate { get; set; }
+        private async void OpenAddMoviePage(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new NewPage1());
+        }
     }
 }

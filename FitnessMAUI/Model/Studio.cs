@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FitnessMAUI.Model
 {
-    internal class Studio
+    public class Studio
     {
         public int Id { get; set; }
         public string Name { get; set; }
