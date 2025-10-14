@@ -10,6 +10,7 @@ namespace FitnessMAUI;
 public partial class NewPage1 : ContentPage
 {
     private Movie addMovie;
+    private List<Studio> studios;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     void Signal([CallerMemberName] string prop = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
@@ -25,24 +26,32 @@ public partial class NewPage1 : ContentPage
     }
 
 
-    public List<Studio> Studios { get; set; }
+    public List<Studio> Studios 
+    { 
+        get => studios; 
+        set
+        {
+            studios = value;
+            Signal();
+        }
+    }
 
     public List<Movie> Studios2 { get; set; }
 
 
-    public NewPage1()
+    public NewPage1(DB dB)
 	{
-        DB.Instance.InitializeAsync();
+
         InitializeComponent();
         AddMovie = new Movie();
         BindingContext = this;
 
-        Studios2 = DB.Instance.GetComingSoonMovies();
+        Studios2 = DB.Instance.GetMovies();
         
 	}
 
     private void SaveClick(object sender, EventArgs e)
     {
-        DB.Instance.AddComingSoonMovieAsync(AddMovie);
+        DB.Instance.AddMovieAsync(AddMovie);
     }
 }

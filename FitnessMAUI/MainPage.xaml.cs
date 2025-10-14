@@ -20,54 +20,14 @@ namespace FitnessMAUI
             InitializeComponent();
             MovieTappedCommand = new Command<Movie>(OnMovieTapped);
             
-            DB.Instance.InitializeAsync();
+            dB = new DB();
 
-            Load();
+            
 
            
         }
 
-        public void Load()
-        {
-            PopularMovies = new ObservableCollection<Movie>
-            {
-                new Movie
-                {
-                    Title = "Довод",
-                    Rating = "8.1",
-                    Genres = "Боевик, Фантастика",
-                    ImageUrl = "123.jpg",
-                },
-                new Movie
-                {
-                    Title = "Интерстеллар",
-                    Rating = "8.6",
-                    Genres = "Фантастика, Драма",
-                    ImageUrl = "123.jpg",
-                },
-                new Movie
-                {
-                    Title = "Начало",
-                    Rating = "8.7",
-                    Genres = "Фантастика, Боевик",
-                    ImageUrl = "123.jpg",
-                }
-            };
-
-            ComingSoonMovies = new ObservableCollection<Movie>
-            {
-                new Movie { Title = "Аватар 3", ImageUrl = "123.jpg", },
-                new Movie { Title = "Миссия невыполнима", ImageUrl = "123.jpg",  },
-                new Movie { Title = "Дюна 2", ImageUrl = "123.jpg", }
-            };
-
-            TopRatedMovies = new ObservableCollection<Movie>
-            {
-                new Movie { Title = "Побег из Шоушенка", Rating = "9.1", Genres = "Драма", ImageUrl = "123.jpg",  },
-                new Movie { Title = "Крестный отец", Rating = "9.0",  Genres = "Драма, Криминал", ImageUrl = "123.jpg", },
-                new Movie { Title = "Темный рыцарь", Rating = "8.9",  Genres = "Боевик, Драма", ImageUrl = "123.jpg", }
-            };
-        }
+        
 
         private async void OnMovieTapped(Movie movie)
         {
@@ -79,7 +39,7 @@ namespace FitnessMAUI
 
         private async void OpenAddMoviePage(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NewPage1());
+            await Navigation.PushAsync(new NewPage1(dB));
         }
     }
 }

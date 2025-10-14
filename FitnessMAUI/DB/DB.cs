@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,11 +22,10 @@ namespace FitnessMAUI.db
 
         public int AutoIncrement { get; set; }
 
-        List<Movie> PopularMovies { get; set; } = new List<Movie>();
-        List<Movie> ComingSoonMovies { get; set; } = new List<Movie>();
-        List<Movie> TopRatedMovies { get; set; } = new List<Movie>();
+        List<Movie> movies { get; set; } = new List<Movie>();
 
-        List<Studio> Studios { get; set; } = new List<Studio>();
+        List<Studio> studios = new List<Studio>();
+
 
         string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db.bin");
 
@@ -33,10 +33,10 @@ namespace FitnessMAUI.db
 
         public DB()
         {
-            
+            InitializeAsync();
         }
 
-        public async Task InitializeAsync()
+        private async void InitializeAsync()
         {
             if (!File.Exists(filename))
                 return;
@@ -65,7 +65,7 @@ namespace FitnessMAUI.db
                 
                 for (int i = 0; i < count; i++)
                 {
-                    PopularMovies.Add(new Movie
+                    movies.Add(new Movie
                     {
                         Id = br.ReadInt32(),
                         Title = br.ReadString(),
@@ -73,64 +73,25 @@ namespace FitnessMAUI.db
                         Genres = br.ReadString(),
                         ImageUrl = br.ReadString(),
                         ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32()),
+                        Type = br.ReadString(),
                     });
                 }
 
-               
-                for (int i = 0; i < count; i++)
-                {
-                    ComingSoonMovies.Add(new Movie
-                    {
-                        Id = br.ReadInt32(),
-                        Title = br.ReadString(),
-                        Rating = br.ReadString(),
-                        Genres = br.ReadString(),
-                        ImageUrl = br.ReadString(),
-                        ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32()),
-                    });
-                }
-
-               
-                for (int i = 0; i < count; i++)
-                {
-                    TopRatedMovies.Add(new Movie
-                    {
-                        Id = br.ReadInt32(),
-                        Title = br.ReadString(),
-                        Rating = br.ReadString(),
-                        Genres = br.ReadString(),
-                        ImageUrl = br.ReadString(),
-                        ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32()),
-                    });
-                }
-
-               
-                for (int i = 0; i < count; i++)
-                {
-                    Studios.Add(new Studio
-                    {
-                        Id = br.ReadInt32(),
-                        Name = br.ReadString(),
-                        DirectorName = br.ReadString(),
-                        DirectorPatronymic = br.ReadString(),
-                        DirectorSurname = br.ReadString(),
-                        Rating = br.ReadInt32()
-                    });
-                }
             }
-
             await Task.CompletedTask;
+            Task.Delay(50);
         }
 
-        public async Task SavePopularMovieAsync()
+        public async Task SaveMovieAsync()
         {
             try
             {
+
                 using (var fs = File.Create(filename))
                 using (var bw = new BinaryWriter(fs))
                 {
-                    bw.Write(PopularMovies.Count);
-                    foreach (var movie in PopularMovies)
+                    bw.Write(movies.Count);
+                    foreach (var movie in movies)
                     {
                         bw.Write(movie.Id);
                         bw.Write(movie.Title);
@@ -140,74 +101,21 @@ namespace FitnessMAUI.db
                         bw.Write(movie.ReleaseDate.Year);
                         bw.Write(movie.ReleaseDate.Month);
                         bw.Write(movie.ReleaseDate.Day);
+                        bw.Write(movie.Type);
                     }
                 }
                 await Task.CompletedTask;
+                Task.Delay(50);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
+                Task.Delay(50);
                 throw;
             }
+
         }
 
-        public async Task SaveComingSoonMovieAsync()
-        {
-            try
-            {
-                using (var fs = File.Create(filename))
-                using (var bw = new BinaryWriter(fs))
-                {
-                    bw.Write(ComingSoonMovies.Count);
-                    foreach (var movie in ComingSoonMovies)
-                    {
-                        bw.Write(movie.Id);
-                        bw.Write(movie.Title);
-                        bw.Write(movie.Genres);
-                        bw.Write(movie.ImageUrl);
-                        bw.Write(movie.Rating);
-                        bw.Write(movie.ReleaseDate.Year);
-                        bw.Write(movie.ReleaseDate.Month);
-                        bw.Write(movie.ReleaseDate.Day);
-                    }
-                }
-                await Task.CompletedTask;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
-                throw;
-            }
-        }
-
-        public async Task SaveTopRatedMovieAsync()
-        {
-            try
-            {
-                using (var fs = File.Create(filename))
-                using (var bw = new BinaryWriter(fs))
-                {
-                    bw.Write(TopRatedMovies.Count);
-                    foreach (var movie in TopRatedMovies)
-                    {
-                        bw.Write(movie.Id);
-                        bw.Write(movie.Title);
-                        bw.Write(movie.Genres);
-                        bw.Write(movie.ImageUrl);
-                        bw.Write(movie.Rating);
-                        bw.Write(movie.ReleaseDate.Year);
-                        bw.Write(movie.ReleaseDate.Month);
-                        bw.Write(movie.ReleaseDate.Day);
-                    }
-                }
-                await Task.CompletedTask;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
-                throw;
-            }
-        }
 
         public async Task SaveStudioAsync()
         {
@@ -216,8 +124,8 @@ namespace FitnessMAUI.db
                 using (var fs = File.Create(filename))
                 using (var bw = new BinaryWriter(fs))
                 {
-                    bw.Write(Studios.Count);
-                    foreach (var studio in Studios)
+                    bw.Write(studios.Count);
+                    foreach (var studio in studios)
                     {
                         bw.Write(studio.Id);
                         bw.Write(studio.Name);
@@ -228,93 +136,59 @@ namespace FitnessMAUI.db
                     }
                 }
                 await Task.CompletedTask;
+                Task.Delay(50);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
+                Task.Delay(50);
                 throw;
             }
         }
 
-        public async Task AddPopularMovieAsync(Movie movie)
+        public async Task AddMovieAsync(Movie movie)
         {
             movie.Id++;
-            PopularMovies.Add(movie);
-            await SavePopularMovieAsync();
+            movies.Add(movie);
+            await SaveMovieAsync();
+            Task.Delay(50);
         }
 
-        public async Task AddComingSoonMovieAsync(Movie movie)
+       
+        public List<Movie> GetMovies()
         {
-            movie.Id++;
-            ComingSoonMovies.Add(movie);
-            await SaveComingSoonMovieAsync();
+            Task.Delay(50);
+            return new List<Movie>(movies);
         }
 
-        public async Task AddTopRatedMovieAsync(Movie movie)
+        
+        public async Task DeleteMovieAsync(Movie movie)
         {
-            movie.Id++;
-            TopRatedMovies.Add(movie);
-            await SaveTopRatedMovieAsync();
-        }
-
-        public List<Movie> GetPopularMovies()
-        {
-            return PopularMovies;
-        }
-
-        public List<Movie> GetComingSoonMovies()
-        {
-            return ComingSoonMovies;
-        }
-
-        public List<Movie> GetTopRatedMovies()
-        {
-            return TopRatedMovies;
-        }
-
-        public async Task DeletePopularMovieAsync(Movie movie)
-        {
-            PopularMovies.Remove(movie);
-            await SavePopularMovieAsync();
-        }
-
-        public async Task DeleteComingSoonMovieAsync(Movie movie)
-        {
-            ComingSoonMovies.Remove(movie);
-            await SaveComingSoonMovieAsync();
-        }
-
-        public async Task DeleteTopRatedMoviesAsync(Movie movie)
-        {
-            TopRatedMovies.Remove(movie);
-            await SaveTopRatedMovieAsync();
+            movies.Remove(movie);
+            await SaveMovieAsync();
+            Task.Delay(50);
         }
 
         public async Task AddStudioAsync(Studio studio)
         {
             studio.Id++;
-            Studios.Add(studio);
+            studios.Add(studio);
             await SaveStudioAsync();
+            Task.Delay(50);
         }
 
         public List<Studio> GetStudios()
         {
-            return Studios;
+            Task.Delay(50);
+            return studios;
         }
 
         public async Task DeleteStudioAsync(Studio studio)
         {
-            Studios.Remove(studio);
+            studios.Remove(studio);
             await SaveStudioAsync();
+            Task.Delay(50);
         }
 
-       
-        public async Task SaveAllAsync()
-        {
-            await SavePopularMovieAsync();
-            await SaveComingSoonMovieAsync();
-            await SaveTopRatedMovieAsync();
-            //await SaveStudioAsync();
-        }
     }
 }

@@ -15,5 +15,6 @@ namespace FitnessMAUI.Model
         public string ImageUrl { get; set; }
         public DateTime ReleaseDate { get; set; }
         public Studio Studio { get; set; }
+        public string Type { get; set; }
     }
 }

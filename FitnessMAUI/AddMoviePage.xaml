@@ -32,14 +32,15 @@
                 <Label Text="Жанр" />
                 <Entry  
                        Placeholder="Например: Драма, Комедия, Фантастика" 
-                       Text="{Binding AddMovie.Genre}"/>
+                       Text="{Binding AddMovie.Genres}"/>
             </VerticalStackLayout>
 
 
             <VerticalStackLayout Spacing="5">
                 <Label Text="Студия" />
-                <Entry x:Name="StudioEntry" 
-                       Placeholder="Название студии" />
+
+                <Picker ItemsSource="{Binding Studios}"/>
+
             </VerticalStackLayout>
 
   
