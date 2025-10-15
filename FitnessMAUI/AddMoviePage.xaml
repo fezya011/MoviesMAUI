@@ -29,6 +29,13 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="5">
+                <Label Text="Студия" />
+
+                <Picker ItemsSource="{Binding Studios}"/>
+
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="5">
                 <Label Text="Жанр" />
                 <Entry  
                        Placeholder="Например: Драма, Комедия, Фантастика" 
@@ -37,9 +44,9 @@
 
 
             <VerticalStackLayout Spacing="5">
-                <Label Text="Студия" />
+                <Label Text="Тип" />
 
-                <Picker ItemsSource="{Binding Studios}"/>
+                <Picker SelectedItem="{Binding SelectedType}" ItemsSource="{Binding Types}"/>
 
             </VerticalStackLayout>
 

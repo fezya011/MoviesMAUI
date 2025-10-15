@@ -3,6 +3,7 @@ using FitnessMAUI.Model;
 using FitnessMAUI.VMTools;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace FitnessMAUI;
@@ -11,6 +12,8 @@ public partial class NewPage1 : ContentPage
 {
     private Movie addMovie;
     private List<Studio> studios;
+    private List<string> types;
+    private string selectedType;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     void Signal([CallerMemberName] string prop = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
@@ -36,22 +39,38 @@ public partial class NewPage1 : ContentPage
         }
     }
 
-    public List<Movie> Studios2 { get; set; }
+    public List<string> Types 
+    { 
+        get => types; 
+        set
+        {
+            types = value;
+            Signal();
+        }
+    }
 
+    public string SelectedType 
+    { 
+        get => selectedType;
+        set
+        {
+            selectedType = value;
+            Signal();
+        } 
+    }
 
     public NewPage1(DB dB)
 	{
-
+        Types = new List<string> { "Популярные", "Топ рейтинга", "Скоро в прокате"};
         InitializeComponent();
         AddMovie = new Movie();
         BindingContext = this;
-
-        Studios2 = DB.Instance.GetMovies();
         
 	}
 
-    private void SaveClick(object sender, EventArgs e)
+    private async void SaveClick(object sender, EventArgs e)
     {
-        DB.Instance.AddMovieAsync(AddMovie);
+        AddMovie.Type = SelectedType;
+        await DB.Instance.AddMovieAsync(AddMovie);
     }
 }

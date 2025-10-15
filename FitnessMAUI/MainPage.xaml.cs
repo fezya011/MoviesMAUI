@@ -9,10 +9,12 @@ namespace FitnessMAUI
     public partial class MainPage : ContentPage
     {
         DB dB;
-        public ObservableCollection<Movie> PopularMovies { get; set; }
+        public List<Movie> PopularMovies { get; set; }
         public ObservableCollection<Movie> ComingSoonMovies { get; set; }
         public ObservableCollection<Movie> TopRatedMovies { get; set; }
 
+
+        
         public ICommand MovieTappedCommand { get; }
        
         public MainPage()
@@ -22,7 +24,7 @@ namespace FitnessMAUI
             
             dB = new DB();
 
-            
+            PopularMovies.Add( DB.Instance.GetMovies());
 
            
         }

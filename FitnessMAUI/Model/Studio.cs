@@ -9,10 +9,10 @@ namespace FitnessMAUI.Model
     public class Studio
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string DirectorName { get; set; }
-        public string DirectorPatronymic { get; set; }
-        public string DirectorSurname { get; set; }
+        public string Name { get; set; } = "";
+        public string DirectorName { get; set; } = "";
+        public string DirectorPatronymic { get; set; } = "";
+        public string DirectorSurname { get; set; } = "";
         public int Rating { get; set; }
     }
 }

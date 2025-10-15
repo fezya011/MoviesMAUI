@@ -20,9 +20,9 @@ namespace FitnessMAUI.db
             }
         }
 
-        public int AutoIncrement { get; set; }
+        int autoIncrement;
 
-        List<Movie> movies { get; set; } = new List<Movie>();
+        List<Movie> movies = new List<Movie>();
 
         List<Studio> studios = new List<Studio>();
 
@@ -54,6 +54,7 @@ namespace FitnessMAUI.db
 
         private async Task LoadDataAsync()
         {
+            await Task.Delay(500);
             using (var fs = File.OpenRead(filename))
             using (var br = new BinaryReader(fs))
             {
@@ -65,27 +66,28 @@ namespace FitnessMAUI.db
                 
                 for (int i = 0; i < count; i++)
                 {
-                    movies.Add(new Movie
-                    {
-                        Id = br.ReadInt32(),
-                        Title = br.ReadString(),
-                        Rating = br.ReadString(),
-                        Genres = br.ReadString(),
-                        ImageUrl = br.ReadString(),
-                        ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32()),
-                        Type = br.ReadString(),
-                    });
+                    Movie movie = new Movie();
+                    movie.Id = br.ReadInt32();
+                    movie.Title = br.ReadString();
+                    movie.Rating = br.ReadString();
+                    movie.Genres = br.ReadString();
+                    movie.ImageUrl = br.ReadString();
+                    movie.ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
+                    movie.Type = br.ReadString();
+                    movies.Add(movie);
+                    ;
                 }
 
             }
-            await Task.CompletedTask;
-            Task.Delay(50);
+
         }
 
         public async Task SaveMovieAsync()
         {
+            await Task.Delay(500);
             try
             {
+
 
                 using (var fs = File.Create(filename))
                 using (var bw = new BinaryWriter(fs))
@@ -104,13 +106,11 @@ namespace FitnessMAUI.db
                         bw.Write(movie.Type);
                     }
                 }
-                await Task.CompletedTask;
-                Task.Delay(50);
+             
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
-                Task.Delay(50);
                 throw;
             }
 
@@ -119,6 +119,7 @@ namespace FitnessMAUI.db
 
         public async Task SaveStudioAsync()
         {
+            await Task.Delay(500);
             try
             {
                 using (var fs = File.Create(filename))
@@ -136,58 +137,58 @@ namespace FitnessMAUI.db
                     }
                 }
                 await Task.CompletedTask;
-                Task.Delay(50);
+               
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
-                Task.Delay(50);
+               
                 throw;
             }
         }
 
         public async Task AddMovieAsync(Movie movie)
         {
+            await Task.Delay(500);
             movie.Id++;
             movies.Add(movie);
             await SaveMovieAsync();
-            Task.Delay(50);
         }
 
        
-        public List<Movie> GetMovies()
+        public async Task<List<Movie>> GetMovies()
         {
-            Task.Delay(50);
+            await Task.Delay(500);
             return new List<Movie>(movies);
         }
 
         
         public async Task DeleteMovieAsync(Movie movie)
         {
+            await Task.Delay(500);
             movies.Remove(movie);
             await SaveMovieAsync();
-            Task.Delay(50);
         }
 
         public async Task AddStudioAsync(Studio studio)
         {
+            await Task.Delay(500);
             studio.Id++;
             studios.Add(studio);
             await SaveStudioAsync();
-            Task.Delay(50);
         }
 
-        public List<Studio> GetStudios()
+        public async Task<List<Studio>> GetStudios()
         {
-            Task.Delay(50);
+            await Task.Delay(500);
             return studios;
         }
 
         public async Task DeleteStudioAsync(Studio studio)
         {
+            await Task.Delay(500);
             studios.Remove(studio);
             await SaveStudioAsync();
-            Task.Delay(50);
         }
 
     }
