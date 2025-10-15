@@ -9,7 +9,7 @@ namespace FitnessMAUI
     public partial class MainPage : ContentPage
     {
         DB dB;
-        public List<Movie> PopularMovies { get; set; }
+        public ObservableCollection<Movie> PopularMovies { get; set; }
         public ObservableCollection<Movie> ComingSoonMovies { get; set; }
         public ObservableCollection<Movie> TopRatedMovies { get; set; }
 
@@ -20,16 +20,29 @@ namespace FitnessMAUI
         public MainPage()
         {
             InitializeComponent();
+            
             MovieTappedCommand = new Command<Movie>(OnMovieTapped);
             
             dB = new DB();
+            GetListsSort();
 
-            PopularMovies.Add( DB.Instance.GetMovies());
 
-           
+
         }
 
-        
+        public async void GetListsSort()
+        {
+            var lists = await dB.GetMovies();
+            foreach (var movie in lists)
+            {
+                if (movie.Type == "Популярные")
+                    PopularMovies.Add(movie);
+                else if (movie.Type == "Топ рейтинга")
+                    TopRatedMovies.Add(movie);
+                else if (movie.Type == "Скоро в прокате")
+                    ComingSoonMovies.Add(movie);
+            }
+        }
 
         private async void OnMovieTapped(Movie movie)
         {
