@@ -20,20 +20,25 @@ namespace FitnessMAUI
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = this;
-            GetListsSort();
-            MovieTappedCommand = new Command<Movie>(OnMovieTapped);
             dB = new DB();
+
+            MovieTappedCommand = new Command<Movie>(OnMovieTapped);
+            BindingContext = this;
 
 
 
         }
 
+
         public async void GetListsSort()
         {
+            PopularMovies.Clear();
+            ComingSoonMovies.Clear();
+            TopRatedMovies.Clear();
             var lists = await dB.GetMovies();
             foreach (var movie in lists)
             {
+                
                 if (movie.Type == "Популярные")
                     PopularMovies.Add(movie);
                 else if (movie.Type == "Топ рейтинга")
@@ -41,6 +46,9 @@ namespace FitnessMAUI
                 else if (movie.Type == "Скоро в прокате")
                     ComingSoonMovies.Add(movie);
             }
+            OnPropertyChanged(nameof(PopularMovies));
+            OnPropertyChanged(nameof(ComingSoonMovies));
+            OnPropertyChanged(nameof(TopRatedMovies));
         }
 
         private async void OnMovieTapped(Movie movie)
@@ -53,7 +61,15 @@ namespace FitnessMAUI
 
         private async void OpenAddMoviePage(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NewPage1(dB));
+            var addMoviePage = new NewPage1(dB);
+            await Navigation.PushAsync(addMoviePage);
         }
+
+        protected override void OnAppearing()
+        {
+            GetListsSort();
+        }
+
+        
     }
 }

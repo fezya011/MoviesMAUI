@@ -11,16 +11,6 @@ namespace FitnessMAUI.db
 {
     public class DB
     {
-        public static DB Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new DB();
-                return instance;
-            }
-        }
-
         int movieAutoIncrement = 1;
         int studioAutoIncrement = 1;
 
@@ -28,8 +18,6 @@ namespace FitnessMAUI.db
         List<Studio> studios = new List<Studio>();
 
         string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db.bin");
-
-        private static DB instance;
 
         public DB()
         {
@@ -116,14 +104,15 @@ namespace FitnessMAUI.db
                     foreach (var movie in movies)
                     {
                         bw.Write(movie.Id);
-                        bw.Write(movie.Title);
+                        bw.Write(movie.Title);   
+                        bw.Write(movie.Rating);
                         bw.Write(movie.Genres);
                         bw.Write(movie.ImageUrl);
-                        bw.Write(movie.Rating);
                         bw.Write(movie.ReleaseDate.Year);
                         bw.Write(movie.ReleaseDate.Month);
                         bw.Write(movie.ReleaseDate.Day);
                         bw.Write(movie.Type);
+                        
                     }
 
                     bw.Write(studios.Count);

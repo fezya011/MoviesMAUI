@@ -14,9 +14,8 @@ public partial class NewPage1 : ContentPage
     private List<Studio> studios;
     private List<string> types;
     private string selectedType;
+    private DB dB;
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    void Signal([CallerMemberName] string prop = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
     public Movie AddMovie 
     { 
@@ -24,7 +23,7 @@ public partial class NewPage1 : ContentPage
         set
         {
             addMovie = value;
-            Signal();
+            OnPropertyChanged();
         }
     }
 
@@ -35,7 +34,7 @@ public partial class NewPage1 : ContentPage
         set
         {
             studios = value;
-            Signal();
+            OnPropertyChanged();
         }
     }
 
@@ -45,7 +44,7 @@ public partial class NewPage1 : ContentPage
         set
         {
             types = value;
-            Signal();
+            OnPropertyChanged();
         }
     }
 
@@ -55,12 +54,13 @@ public partial class NewPage1 : ContentPage
         set
         {
             selectedType = value;
-            Signal();
+            OnPropertyChanged();
         } 
     }
 
     public NewPage1(DB dB)
 	{
+        this.dB = dB;
         Types = new List<string> { "Популярные", "Топ рейтинга", "Скоро в прокате"};
         InitializeComponent();
         AddMovie = new Movie();
@@ -74,7 +74,7 @@ public partial class NewPage1 : ContentPage
         {
             AddMovie.Type = SelectedType;
 
-            await DB.Instance.AddMovieAsync(AddMovie);
+            await dB.AddMovieAsync(AddMovie);
 
             await Navigation.PopToRootAsync();
         }

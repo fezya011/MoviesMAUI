@@ -111,7 +111,7 @@
                                        CornerRadius="15"
                                        Padding="0"
                                        HeightRequest="200">
-                                    <Image Source="{Binding ImageUrl}"
+                                    <Image Source="picture.jpg"
                                            Aspect="AspectFill"
                                            BackgroundColor="{StaticResource CardBackground}"/>
 
