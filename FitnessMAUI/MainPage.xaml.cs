@@ -9,9 +9,9 @@ namespace FitnessMAUI
     public partial class MainPage : ContentPage
     {
         DB dB;
-        public ObservableCollection<Movie> PopularMovies { get; set; }
-        public ObservableCollection<Movie> ComingSoonMovies { get; set; }
-        public ObservableCollection<Movie> TopRatedMovies { get; set; }
+        public ObservableCollection<Movie> PopularMovies { get; set; } = new ObservableCollection<Movie>();
+        public ObservableCollection<Movie> ComingSoonMovies { get; set; } = new ObservableCollection<Movie>();
+        public ObservableCollection<Movie> TopRatedMovies { get; set; } = new ObservableCollection<Movie>();
 
 
         
@@ -20,11 +20,10 @@ namespace FitnessMAUI
         public MainPage()
         {
             InitializeComponent();
-            
-            MovieTappedCommand = new Command<Movie>(OnMovieTapped);
-            
-            dB = new DB();
+            BindingContext = this;
             GetListsSort();
+            MovieTappedCommand = new Command<Movie>(OnMovieTapped);
+            dB = new DB();
 
 
 

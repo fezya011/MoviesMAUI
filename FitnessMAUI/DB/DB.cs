@@ -1,6 +1,7 @@
 ﻿using FitnessMAUI.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -20,12 +21,11 @@ namespace FitnessMAUI.db
             }
         }
 
-        int autoIncrement;
+        int movieAutoIncrement = 1;
+        int studioAutoIncrement = 1;
 
         List<Movie> movies = new List<Movie>();
-
         List<Studio> studios = new List<Studio>();
-
 
         string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db.bin");
 
@@ -47,7 +47,6 @@ namespace FitnessMAUI.db
             }
             catch (Exception ex)
             {
-                
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
             }
         }
@@ -63,7 +62,10 @@ namespace FitnessMAUI.db
 
                 int count = br.ReadInt32();
 
-                
+
+                movieAutoIncrement = 1;
+                studioAutoIncrement = 1;
+
                 for (int i = 0; i < count; i++)
                 {
                     Movie movie = new Movie();
@@ -75,20 +77,38 @@ namespace FitnessMAUI.db
                     movie.ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
                     movie.Type = br.ReadString();
                     movies.Add(movie);
-                    ;
+
+
+                    if (movie.Id >= movieAutoIncrement)
+                        movieAutoIncrement = movie.Id + 1;
                 }
 
-            }
+                if (fs.Position < fs.Length)
+                {
+                    int studioCount = br.ReadInt32();
+                    for (int i = 0; i < studioCount; i++)
+                    {
+                        Studio studio = new Studio();
+                        studio.Id = br.ReadInt32();
+                        studio.Name = br.ReadString();
+                        studio.DirectorName = br.ReadString();
+                        studio.DirectorPatronymic = br.ReadString();
+                        studio.DirectorSurname = br.ReadString();
+                        studio.Rating = br.ReadInt32();
+                        studios.Add(studio);
 
+                        if (studio.Id >= studioAutoIncrement)
+                            studioAutoIncrement = studio.Id + 1;
+                    }
+                }
+            }
         }
 
-        public async Task SaveMovieAsync()
+        public async Task SaveDataAsync()
         {
             await Task.Delay(500);
             try
             {
-
-
                 using (var fs = File.Create(filename))
                 using (var bw = new BinaryWriter(fs))
                 {
@@ -105,26 +125,7 @@ namespace FitnessMAUI.db
                         bw.Write(movie.ReleaseDate.Day);
                         bw.Write(movie.Type);
                     }
-                }
-             
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
-                throw;
-            }
 
-        }
-
-
-        public async Task SaveStudioAsync()
-        {
-            await Task.Delay(500);
-            try
-            {
-                using (var fs = File.Create(filename))
-                using (var bw = new BinaryWriter(fs))
-                {
                     bw.Write(studios.Count);
                     foreach (var studio in studios)
                     {
@@ -136,13 +137,10 @@ namespace FitnessMAUI.db
                         bw.Write(studio.Rating);
                     }
                 }
-                await Task.CompletedTask;
-               
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
-               
                 throw;
             }
         }
@@ -150,46 +148,46 @@ namespace FitnessMAUI.db
         public async Task AddMovieAsync(Movie movie)
         {
             await Task.Delay(500);
-            movie.Id++;
+            movie.Id = movieAutoIncrement++;
             movies.Add(movie);
-            await SaveMovieAsync();
+            await SaveDataAsync();
         }
 
-       
         public async Task<List<Movie>> GetMovies()
         {
             await Task.Delay(500);
             return new List<Movie>(movies);
         }
 
-        
         public async Task DeleteMovieAsync(Movie movie)
         {
             await Task.Delay(500);
             movies.Remove(movie);
-            await SaveMovieAsync();
+            await SaveDataAsync();
         }
 
         public async Task AddStudioAsync(Studio studio)
         {
             await Task.Delay(500);
-            studio.Id++;
+            studio.Id = studioAutoIncrement++;
             studios.Add(studio);
-            await SaveStudioAsync();
+            await SaveDataAsync();
         }
 
         public async Task<List<Studio>> GetStudios()
         {
             await Task.Delay(500);
-            return studios;
+            return new List<Studio>(studios);
         }
 
         public async Task DeleteStudioAsync(Studio studio)
         {
             await Task.Delay(500);
             studios.Remove(studio);
-            await SaveStudioAsync();
+            await SaveDataAsync();
         }
 
+        public int GetNextMovieId() => movieAutoIncrement;
+        public int GetNextStudioId() => studioAutoIncrement;
     }
 }

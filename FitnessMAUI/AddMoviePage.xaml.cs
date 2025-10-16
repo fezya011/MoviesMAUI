@@ -70,7 +70,17 @@ public partial class NewPage1 : ContentPage
 
     private async void SaveClick(object sender, EventArgs e)
     {
-        AddMovie.Type = SelectedType;
-        await DB.Instance.AddMovieAsync(AddMovie);
+        try
+        {
+            AddMovie.Type = SelectedType;
+
+            await DB.Instance.AddMovieAsync(AddMovie);
+
+            await Navigation.PopToRootAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", $"Не удалось сохранить фильм: {ex.Message}", "OK");
+        }
     }
 }
