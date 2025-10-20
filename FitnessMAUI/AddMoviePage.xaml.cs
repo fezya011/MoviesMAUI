@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+
 namespace FitnessMAUI;
 
 public partial class NewPage1 : ContentPage
@@ -15,6 +16,7 @@ public partial class NewPage1 : ContentPage
     private List<string> types;
     private string selectedType;
     private DB dB;
+
 
 
     public Movie AddMovie 
@@ -65,6 +67,8 @@ public partial class NewPage1 : ContentPage
         InitializeComponent();
         AddMovie = new Movie();
         BindingContext = this;
+
+        
         
 	}
 
@@ -72,6 +76,7 @@ public partial class NewPage1 : ContentPage
     {
         try
         {
+            AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
             AddMovie.Type = SelectedType;
 
             await dB.AddMovieAsync(AddMovie);
@@ -82,5 +87,10 @@ public partial class NewPage1 : ContentPage
         {
             await DisplayAlert("Ошибка", $"Не удалось сохранить фильм: {ex.Message}", "OK");
         }
+    }
+
+    void OnSliderValue(object sender, ValueChangedEventArgs e)
+    {   
+        header.Text = $"Выбрано: {e.NewValue:F1}";
     }
 }

@@ -22,10 +22,8 @@
  
             <VerticalStackLayout Spacing="5">
                 <Label Text="Рейтинг" />
-                <Entry 
-                       Placeholder="0-10"
-                       Keyboard="Numeric" 
-                       Text="{Binding AddMovie.Rating}"/>
+                <Label x:Name="header"/>
+                <Slider Maximum="10" Minimum="0"  Value="{Binding AddMovie.Rating}" ValueChanged="OnSliderValue"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="5">

@@ -17,7 +17,7 @@ namespace FitnessMAUI.db
         List<Movie> movies = new List<Movie>();
         List<Studio> studios = new List<Studio>();
 
-        string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db.bin");
+        string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db2.bin");
 
         public DB()
         {
@@ -59,7 +59,7 @@ namespace FitnessMAUI.db
                     Movie movie = new Movie();
                     movie.Id = br.ReadInt32();
                     movie.Title = br.ReadString();
-                    movie.Rating = br.ReadString();
+                    movie.Rating = br.ReadDecimal();
                     movie.Genres = br.ReadString();
                     movie.ImageUrl = br.ReadString();
                     movie.ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());

@@ -10,7 +10,7 @@ namespace FitnessMAUI.Model
     {
         public int Id { get; set; }
         public string Title { get; set; } = "";
-        public string Rating { get; set; } = "";
+        public decimal Rating { get; set; }
         public string Genres { get; set; } = "";
         public string ImageUrl { get; set; } = "";
         public DateTime ReleaseDate { get; set; }

@@ -84,7 +84,7 @@
                             WidthRequest="40"
                             HeightRequest="40"
                             CornerRadius="20"
-                            />         
+                            />
                 </Grid>
             </Frame>
 
@@ -115,7 +115,7 @@
                                            Aspect="AspectFill"
                                            BackgroundColor="{StaticResource CardBackground}"/>
 
-                                   
+
                                 </Frame>
 
 
@@ -148,6 +148,7 @@
                         </Frame>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
+
             </CarouselView>
 
 
@@ -170,7 +171,7 @@
                                 <Image Source="{Binding ImageUrl}"
                                        Aspect="AspectFill"/>
 
-                               
+
                             </Frame>
 
 
@@ -197,6 +198,7 @@
 
             <CollectionView ItemsSource="{Binding TopRatedMovies}"
                            Margin="15,10">
+                
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid ColumnSpacing="15" 
@@ -250,12 +252,11 @@
                                 </Frame>
                             </StackLayout>
 
-                            
+
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
     </ScrollView>
-
 </ContentPage>
