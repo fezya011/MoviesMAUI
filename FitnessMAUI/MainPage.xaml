@@ -85,8 +85,20 @@
                             HeightRequest="40"
                             CornerRadius="20"
                             />
+                   
                 </Grid>
             </Frame>
+
+            <Button Grid.Column="2"
+                    Text="+студия"
+                    Clicked="OpenAddStudioPage"
+                    BackgroundColor="{StaticResource AccentColor}"
+                    TextColor="White"
+                    FontSize="20"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+/>
 
             <Label Text="Популярные сейчас" 
                    Style="{StaticResource SectionTitle}"
@@ -156,37 +168,50 @@
                    Style="{StaticResource SectionTitle}"
                    Margin="15,20,15,0"/>
 
-            <CollectionView ItemsSource="{Binding ComingSoonMovies}"
-                           Margin="15,10"
-                           SelectionMode="None">
+            <CollectionView ItemsSource="{Binding ComingSoonMovies}" SelectedItem="{Binding SelectedMovie}"
+                Margin="15,10"
+                SelectionMode="Single">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="15"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid WidthRequest="120" HeightRequest="180">
-                            <Frame BackgroundColor="{StaticResource CardBackground}"
-                                   CornerRadius="15"
-                                   Padding="0">
-                                <Image Source="{Binding ImageUrl}"
-                                       Aspect="AspectFill"/>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Удалить" 
+        BackgroundColor="Red" Clicked="DeleteComingSoonMovieButton"/>
+                            </SwipeItems>
+                            </SwipeView.LeftItems>
 
+                            <SwipeView.RightItems>
+                                <SwipeItems >
+                                    <SwipeItem Text="Редактировать" 
+         BackgroundColor="Green" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
-                            </Frame>
+                            <Grid WidthRequest="120" HeightRequest="180">
+                                <Frame BackgroundColor="{StaticResource CardBackground}"
+                            CornerRadius="15"
+                            Padding="0">
+                                    <Image Source="{Binding ImageUrl}"
+                                Aspect="AspectFill"/>
+                                </Frame>
 
-
-                            <Frame BackgroundColor="{StaticResource AccentColor}"
-                                   CornerRadius="10"
-                                   Padding="8,4"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="End"
-                                   Margin="0,0,0,10">
-                                <Label Text="{Binding ReleaseDate}" 
-                                       TextColor="White" 
-                                       FontSize="10"
-                                       FontAttributes="Bold"/>
-                            </Frame>
-                        </Grid>
+                                <Frame BackgroundColor="{StaticResource AccentColor}"
+                            CornerRadius="10"
+                            Padding="8,4"
+                            HorizontalOptions="Center"
+                            VerticalOptions="End"
+                            Margin="0,0,0,10">
+                                    <Label Text="{Binding ReleaseDate}" 
+                                TextColor="White" 
+                                FontSize="10"
+                                FontAttributes="Bold"/>
+                                </Frame>
+                            </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -196,12 +221,28 @@
                    Style="{StaticResource SectionTitle}"
                    Margin="15,20,15,0"/>
 
-            <CollectionView ItemsSource="{Binding TopRatedMovies}"
+            <CollectionView ItemsSource="{Binding TopRatedMovies}" SelectionMode="Single" SelectedItem="{Binding SelectedMovie}"
                            Margin="15,10">
                 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnSpacing="15" 
+                        <SwipeView BackgroundColor="{StaticResource PageBackgroundColor}">
+
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Удалить" 
+        BackgroundColor="Red" Clicked="DeleteTopRatedMovieButton"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            
+                            <SwipeView.RightItems>
+                                <SwipeItems >
+                                    <SwipeItem Text="Редактировать" 
+         BackgroundColor="Green" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Grid ColumnSpacing="15" 
                               HeightRequest="100"
                               Margin="0,5">
                             <Grid.ColumnDefinitions>
@@ -254,6 +295,7 @@
 
 
                         </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

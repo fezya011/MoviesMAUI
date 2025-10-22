@@ -17,7 +17,7 @@ namespace FitnessMAUI.db
         List<Movie> movies = new List<Movie>();
         List<Studio> studios = new List<Studio>();
 
-        string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db2.bin");
+        string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db3.bin");
 
         public DB()
         {
@@ -41,7 +41,6 @@ namespace FitnessMAUI.db
 
         private async Task LoadDataAsync()
         {
-            await Task.Delay(500);
             using (var fs = File.OpenRead(filename))
             using (var br = new BinaryReader(fs))
             {
@@ -82,7 +81,7 @@ namespace FitnessMAUI.db
                         studio.DirectorName = br.ReadString();
                         studio.DirectorPatronymic = br.ReadString();
                         studio.DirectorSurname = br.ReadString();
-                        studio.Rating = br.ReadInt32();
+                        studio.Rating = br.ReadDecimal();
                         studios.Add(studio);
 
                         if (studio.Id >= studioAutoIncrement)

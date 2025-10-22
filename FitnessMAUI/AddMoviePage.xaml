@@ -29,7 +29,7 @@
             <VerticalStackLayout Spacing="5">
                 <Label Text="Студия" />
 
-                <Picker ItemsSource="{Binding Studios}"/>
+                <Picker ItemsSource="{Binding Studios}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedStudio}"/>
 
             </VerticalStackLayout>
 

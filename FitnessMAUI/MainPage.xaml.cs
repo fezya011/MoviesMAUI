@@ -9,13 +9,24 @@ namespace FitnessMAUI
     public partial class MainPage : ContentPage
     {
         DB dB;
+        private Movie selectedMovie;
+
         public ObservableCollection<Movie> PopularMovies { get; set; } = new ObservableCollection<Movie>();
         public ObservableCollection<Movie> ComingSoonMovies { get; set; } = new ObservableCollection<Movie>();
         public ObservableCollection<Movie> TopRatedMovies { get; set; } = new ObservableCollection<Movie>();
 
+        public Movie SelectedMovie 
+        { 
+            get => selectedMovie;
+            set
+            {
+                selectedMovie = value;
+                OnPropertyChanged();
+            }
+        }
 
-        
         public ICommand MovieTappedCommand { get; }
+       
        
         public MainPage()
         {
@@ -70,6 +81,22 @@ namespace FitnessMAUI
             GetListsSort();
         }
 
-        
+        private void DeleteComingSoonMovieButton(object sender, EventArgs e)
+        {
+            dB.DeleteMovieAsync(SelectedMovie);
+            GetListsSort();
+        }
+
+        private void DeleteTopRatedMovieButton(object sender, EventArgs e)
+        {
+            dB.DeleteMovieAsync(SelectedMovie);
+            GetListsSort();
+        }
+
+        private async void OpenAddStudioPage(object sender, EventArgs e)
+        {
+            var addStudioPage = new AddStudioPage(dB);
+            await Navigation.PushAsync(addStudioPage);
+        }
     }
 }

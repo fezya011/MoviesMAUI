@@ -12,12 +12,11 @@ namespace FitnessMAUI;
 public partial class NewPage1 : ContentPage
 {
     private Movie addMovie;
-    private List<Studio> studios;
+    private List<Studio> studios = new List<Studio>();
     private List<string> types;
     private string selectedType;
     private DB dB;
-
-
+    private Studio selectedStudio;
 
     public Movie AddMovie 
     { 
@@ -60,6 +59,16 @@ public partial class NewPage1 : ContentPage
         } 
     }
 
+    public Studio SelectedStudio 
+    { 
+        get => selectedStudio; 
+        set
+        {
+            selectedStudio = value;
+            OnPropertyChanged();
+        }
+    }
+
     public NewPage1(DB dB)
 	{
         this.dB = dB;
@@ -67,10 +76,14 @@ public partial class NewPage1 : ContentPage
         InitializeComponent();
         AddMovie = new Movie();
         BindingContext = this;
+        LoadStudios();
 
-        
-        
-	}
+    }
+
+    private async void LoadStudios()
+    {
+        Studios = await dB.GetStudios();
+    }
 
     private async void SaveClick(object sender, EventArgs e)
     {
@@ -78,6 +91,7 @@ public partial class NewPage1 : ContentPage
         {
             AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
             AddMovie.Type = SelectedType;
+            AddMovie.Studio = SelectedStudio;
 
             await dB.AddMovieAsync(AddMovie);
 

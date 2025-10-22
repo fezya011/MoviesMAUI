@@ -13,6 +13,6 @@ namespace FitnessMAUI.Model
         public string DirectorName { get; set; } = "";
         public string DirectorPatronymic { get; set; } = "";
         public string DirectorSurname { get; set; } = "";
-        public int Rating { get; set; }
+        public decimal Rating { get; set; }
     }
 }
