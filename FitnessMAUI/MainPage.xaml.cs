@@ -11,9 +11,9 @@ namespace FitnessMAUI
         DB dB;
         private Movie selectedMovie;
 
-        public ObservableCollection<Movie> PopularMovies { get; set; } = new ObservableCollection<Movie>();
-        public ObservableCollection<Movie> ComingSoonMovies { get; set; } = new ObservableCollection<Movie>();
-        public ObservableCollection<Movie> TopRatedMovies { get; set; } = new ObservableCollection<Movie>();
+        public List<Movie> PopularMovies { get; set; } = new List<Movie>();
+        public List<Movie> ComingSoonMovies { get; set; } = new List<Movie>();
+        public List<Movie> TopRatedMovies { get; set; } = new List<Movie>();
 
         public Movie SelectedMovie 
         { 
@@ -43,9 +43,12 @@ namespace FitnessMAUI
 
         public async void GetListsSort()
         {
-            PopularMovies.Clear();
-            ComingSoonMovies.Clear();
-            TopRatedMovies.Clear();
+            PopularMovies = new List<Movie>();
+            ComingSoonMovies = new List<Movie>();
+            TopRatedMovies = new List<Movie>();
+            OnPropertyChanged(nameof(PopularMovies));
+            OnPropertyChanged(nameof(ComingSoonMovies));
+            OnPropertyChanged(nameof(TopRatedMovies));
             var lists = await dB.GetMovies();
             foreach (var movie in lists)
             {
@@ -72,8 +75,22 @@ namespace FitnessMAUI
 
         private async void OpenAddMoviePage(object sender, EventArgs e)
         {
-            var addMoviePage = new NewPage1(dB);
+            var addMoviePage = new AddEditMoviePage(dB, 0);
             await Navigation.PushAsync(addMoviePage);
+            
+        }
+
+        private async void EditComingSoonMovieButton(object sender, EventArgs e)
+        {
+            var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
+            await Navigation.PushAsync(editMoviePage);
+
+        }
+        private async void EditTopRatedMovieButton(object sender, EventArgs e)
+        {
+            var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
+            await Navigation.PushAsync(editMoviePage);
+            
         }
 
         protected override void OnAppearing()
@@ -98,5 +115,7 @@ namespace FitnessMAUI
             var addStudioPage = new AddStudioPage(dB);
             await Navigation.PushAsync(addStudioPage);
         }
+
+        
     }
 }

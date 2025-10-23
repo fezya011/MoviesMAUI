@@ -187,7 +187,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItems >
                                     <SwipeItem Text="Редактировать" 
-         BackgroundColor="Green" />
+         BackgroundColor="Green" Clicked="EditComingSoonMovieButton"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
@@ -238,7 +238,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItems >
                                     <SwipeItem Text="Редактировать" 
-         BackgroundColor="Green" />
+         BackgroundColor="Green" Clicked="EditTopRatedMovieButton"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>
 

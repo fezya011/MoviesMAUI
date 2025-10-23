@@ -133,18 +133,64 @@ namespace FitnessMAUI.db
             }
         }
 
-        public async Task AddMovieAsync(Movie movie)
-        {
+        public async Task AddMovieAsync(Movie tempMovie)
+        { 
             await Task.Delay(500);
+            Movie movie = new Movie();
             movie.Id = movieAutoIncrement++;
+            movie.Title = tempMovie.Title;
+            movie.Rating = tempMovie.Rating;
+            movie.Genres = tempMovie.Genres;
+            movie.ImageUrl = tempMovie.ImageUrl;
+            movie.ReleaseDate = tempMovie.ReleaseDate;
+            movie.Type = tempMovie.Type;
             movies.Add(movie);
             await SaveDataAsync();
         }
+        public async Task<Movie?> SearchMovieById(int tempMovie)
+        {
+            await Task.Delay(500);
+            var existingMovie = movies.FirstOrDefault(m => m.Id == tempMovie);
+            Movie movie = new Movie();
+            movie.Id = existingMovie.Id;
+            movie.Title = existingMovie.Title;
+            movie.Rating = existingMovie.Rating;
+            movie.Genres = existingMovie.Genres;
+            movie.ImageUrl = existingMovie.ImageUrl;
+            movie.ReleaseDate = existingMovie.ReleaseDate;
+            movie.Type = existingMovie.Type;
+            return movie;
+        }
 
+        public async Task EditMovieAsync(Movie tempMovie)
+        {
+            await Task.Delay(500);
+
+
+            var existingMovie = movies.FirstOrDefault(m => m.Id == tempMovie.Id);
+
+            if (existingMovie != null)
+            {
+
+                existingMovie.Title = tempMovie.Title;
+                existingMovie.Rating = tempMovie.Rating;
+                existingMovie.Genres = tempMovie.Genres;
+                existingMovie.ImageUrl = tempMovie.ImageUrl;
+                existingMovie.ReleaseDate = tempMovie.ReleaseDate;
+                existingMovie.Type = tempMovie.Type;
+
+                await SaveDataAsync();
+            }
+            else
+            {
+                await SaveDataAsync();
+            }
+
+        }
         public async Task<List<Movie>> GetMovies()
         {
             await Task.Delay(500);
-            return new List<Movie>(movies);
+            return movies.ToList();
         }
 
         public async Task DeleteMovieAsync(Movie movie)

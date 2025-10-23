@@ -9,16 +9,16 @@ using System.Windows.Input;
 
 namespace FitnessMAUI;
 
-public partial class NewPage1 : ContentPage
+public partial class AddEditMoviePage : ContentPage
 {
-    private Movie addMovie;
+    private Movie? addMovie;
     private List<Studio> studios = new List<Studio>();
     private List<string> types;
     private string selectedType;
     private DB dB;
     private Studio selectedStudio;
 
-    public Movie AddMovie 
+    public Movie? AddMovie 
     { 
         get => addMovie; 
         set
@@ -69,19 +69,26 @@ public partial class NewPage1 : ContentPage
         }
     }
 
-    public NewPage1(DB dB)
+    public AddEditMoviePage(DB dB, int movieId)
 	{
+         
         this.dB = dB;
         Types = new List<string> { "Популярные", "Топ рейтинга", "Скоро в прокате"};
         InitializeComponent();
-        AddMovie = new Movie();
+        
         BindingContext = this;
+        SearchMovie(movieId);
         LoadStudios();
+    }
 
+    private async void SearchMovie(int movieId)
+    {
+        AddMovie = await dB.SearchMovieById(movieId);
     }
 
     private async void LoadStudios()
     {
+
         Studios = await dB.GetStudios();
     }
 
@@ -89,13 +96,25 @@ public partial class NewPage1 : ContentPage
     {
         try
         {
-            AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
-            AddMovie.Type = SelectedType;
-            AddMovie.Studio = SelectedStudio;
+            if (AddMovie.Id == 0)
+            {
+                AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
+                AddMovie.Type = SelectedType;
+                AddMovie.Studio = SelectedStudio;
 
-            await dB.AddMovieAsync(AddMovie);
+                await dB.AddMovieAsync(AddMovie);
 
-            await Navigation.PopToRootAsync();
+                await Navigation.PopToRootAsync();
+            }
+            else
+            {
+                AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
+                AddMovie.Type = SelectedType;
+                AddMovie.Studio = SelectedStudio;
+                await dB.EditMovieAsync(AddMovie);
+                await Navigation.PopToRootAsync();
+            }
+            
         }
         catch (Exception ex)
         {
