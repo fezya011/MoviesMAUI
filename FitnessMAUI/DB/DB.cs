@@ -17,7 +17,7 @@ namespace FitnessMAUI.db
         List<Movie> movies = new List<Movie>();
         List<Studio> studios = new List<Studio>();
 
-        string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db3.bin");
+        string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db4.bin");
 
         public DB()
         {
@@ -61,6 +61,7 @@ namespace FitnessMAUI.db
                     movie.Rating = br.ReadDecimal();
                     movie.Genres = br.ReadString();
                     movie.ImageUrl = br.ReadString();
+                    movie.StudioId = br.ReadInt32();
                     movie.ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
                     movie.Type = br.ReadString();
                     movies.Add(movie);
@@ -107,6 +108,7 @@ namespace FitnessMAUI.db
                         bw.Write(movie.Rating);
                         bw.Write(movie.Genres);
                         bw.Write(movie.ImageUrl);
+                        bw.Write(movie.StudioId);
                         bw.Write(movie.ReleaseDate.Year);
                         bw.Write(movie.ReleaseDate.Month);
                         bw.Write(movie.ReleaseDate.Day);
@@ -151,7 +153,13 @@ namespace FitnessMAUI.db
         {
             await Task.Delay(500);
             var existingMovie = movies.FirstOrDefault(m => m.Id == tempMovie);
+           
             Movie movie = new Movie();
+            if (existingMovie == null)
+            {
+                return movie;
+            }
+
             movie.Id = existingMovie.Id;
             movie.Title = existingMovie.Title;
             movie.Rating = existingMovie.Rating;

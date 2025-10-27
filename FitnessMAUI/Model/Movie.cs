@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace FitnessMAUI.Model
         public string Genres { get; set; } = "";
         public string ImageUrl { get; set; } = "";
         public DateTime ReleaseDate { get; set; }
+        public int StudioId { get; set; }
         public Studio Studio { get; set; }
         public string Type { get; set; } = "";
     }

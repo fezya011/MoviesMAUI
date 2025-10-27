@@ -46,9 +46,7 @@ namespace FitnessMAUI
             PopularMovies = new List<Movie>();
             ComingSoonMovies = new List<Movie>();
             TopRatedMovies = new List<Movie>();
-            OnPropertyChanged(nameof(PopularMovies));
-            OnPropertyChanged(nameof(ComingSoonMovies));
-            OnPropertyChanged(nameof(TopRatedMovies));
+            
             var lists = await dB.GetMovies();
             foreach (var movie in lists)
             {

@@ -17,6 +17,7 @@ public partial class AddEditMoviePage : ContentPage
     private string selectedType;
     private DB dB;
     private Studio selectedStudio;
+    private int movieId;
 
     public Movie? AddMovie 
     { 
@@ -75,21 +76,30 @@ public partial class AddEditMoviePage : ContentPage
         this.dB = dB;
         Types = new List<string> { "Популярные", "Топ рейтинга", "Скоро в прокате"};
         InitializeComponent();
-        
+        this.movieId = movieId;
         BindingContext = this;
-        SearchMovie(movieId);
-        LoadStudios();
+
+        LoadData();
     }
 
+    private async void LoadData()
+    {
+        Studios = await dB.GetStudios();
+
+        SearchMovie(movieId);
+    }
+
+   
     private async void SearchMovie(int movieId)
     {
         AddMovie = await dB.SearchMovieById(movieId);
-    }
-
-    private async void LoadStudios()
-    {
-
-        Studios = await dB.GetStudios();
+        if (AddMovie == null)
+        {
+            AddMovie = new Movie();
+            return;
+        }
+        SelectedType = Types.FirstOrDefault(t => t == AddMovie.Type);
+        SelectedStudio = Studios.FirstOrDefault(s => s.Id == AddMovie.StudioId);
     }
 
     private async void SaveClick(object sender, EventArgs e)
@@ -101,6 +111,7 @@ public partial class AddEditMoviePage : ContentPage
                 AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
                 AddMovie.Type = SelectedType;
                 AddMovie.Studio = SelectedStudio;
+                AddMovie.StudioId = SelectedStudio.Id;
 
                 await dB.AddMovieAsync(AddMovie);
 
@@ -111,7 +122,9 @@ public partial class AddEditMoviePage : ContentPage
                 AddMovie.Rating = Math.Round(AddMovie.Rating, 1);
                 AddMovie.Type = SelectedType;
                 AddMovie.Studio = SelectedStudio;
+                AddMovie.StudioId = SelectedStudio.Id;
                 await dB.EditMovieAsync(AddMovie);
+                OnPropertyChanged(nameof(AddMovie));
                 await Navigation.PopToRootAsync();
             }
             
