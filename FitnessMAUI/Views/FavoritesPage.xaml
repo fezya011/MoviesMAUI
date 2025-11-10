@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:FitnessMAUI.Controls"
+             x:Class="FitnessMAUI.Views.FavoritesPage"
+             Title="Избранное">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+        <CollectionView ItemsSource="{Binding FavoriteMovies}" 
+                       EmptyView="Нет избранных фильмов">
+            <CollectionView.Header>
+                <Label Text="Избранные фильмы" 
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       Margin="15,10"/>
+            </CollectionView.Header>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <controls:MovieCardView 
+                        Title="{Binding Title}"
+                        Rating="{Binding Rating}"
+                        Genres="{Binding Genres}"
+                        ImageUrl="{Binding ImageUrl}"
+                        HeightRequest="220"
+                        WidthRequest="150"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

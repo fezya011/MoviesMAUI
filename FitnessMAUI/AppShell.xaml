@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="FitnessMAUI.AppShell"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FitnessMAUI"
+             xmlns:views="clr-namespace:FitnessMAUI.Views"
+             Title="FitnessMAUI"
+             FlyoutHeaderBehavior="CollapseOnScroll">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="#2C3E50"/>
+                <Setter Property="Shell.ForegroundColor" Value="White"/>
+                <Setter Property="Shell.TitleColor" Value="White"/>
+                <Setter Property="Shell.DisabledColor" Value="#B4B4B4"/>
+                <Setter Property="Shell.UnselectedColor" Value="#95A5A6"/>
+                <Setter Property="Shell.TabBarBackgroundColor" Value="#2C3E50"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95A5A6"/>
+            </Style>
+
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}"/>
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}"/>
+            <Style TargetType="Tab" BasedOn="{StaticResource BaseStyle}"/>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <Shell.FlyoutHeader>
+        <Grid BackgroundColor="#2C3E50" HeightRequest="120">
+            <VerticalStackLayout VerticalOptions="Center" Padding="20,0">
+                <Label Text="Kinopoisk" 
+                       TextColor="White" 
+                       FontSize="24" 
+                       FontAttributes="Bold"/>
+                <Label Text="{Binding CurrentUser.Username, StringFormat='Вы вошли как: {0}'}" 
+                       TextColor="#BDC3C7"
+                       FontSize="14"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutFooter>
+        <Grid BackgroundColor="#34495E" HeightRequest="60">
+            <Button Text="Выйти" 
+                    BackgroundColor="#E74C3C"
+                    TextColor="White"
+                    Command="{Binding LogoutCommand}"
+                    Margin="10"/>
+        </Grid>
+    </Shell.FlyoutFooter>
+
+    <TabBar>
+        <Tab Title="Главная" Icon="home.png">
+            <ShellContent Route="MainPage" ContentTemplate="{DataTemplate views:MainShellPage}"/>
+        </Tab>
+
+        <Tab Title="Поиск" Icon="search.png">
+            <ShellContent Route="SearchPage" ContentTemplate="{DataTemplate views:SearchPage}"/>
+        </Tab>
+
+        <Tab Title="Профиль" Icon="profile.png">
+            <ShellContent Route="ProfilePage" ContentTemplate="{DataTemplate views:ProfilePage}"/>
+        </Tab>
+    </TabBar>
+
+ 
+    <FlyoutItem Title="Фильмы" Icon="movie.png" Route="Movies">
+        <Tab>
+            <ShellContent Route="MoviesPage" ContentTemplate="{DataTemplate views:MoviesPage}"/>
+        </Tab>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Студии" Icon="studio.png">
+        <ShellContent Route="StudiosPage" ContentTemplate="{DataTemplate views:StudiosPage}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Избранное" Icon="favorite.png">
+        <ShellContent Route="FavoritesPage" ContentTemplate="{DataTemplate views:FavoritesPage}"/>
+    </FlyoutItem>
+
+</Shell>

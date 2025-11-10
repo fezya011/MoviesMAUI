@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FitnessMAUI.Controls.MovieCardView"
+             x:Name="this">
+
+    <Frame BackgroundColor="#34495E" 
+           CornerRadius="15" 
+           Padding="0"
+           HasShadow="True">
+
+        <Grid RowDefinitions="*,Auto" HeightRequest="200" WidthRequest="150">
+
+            <Image Source="{Binding Source={x:Reference this}, Path=ImageUrl}" 
+                   Aspect="AspectFill"
+                   BackgroundColor="#2C3E50"/>
+
+            <Frame Grid.Row="0"
+                   BackgroundColor="#E74C3C"
+                   CornerRadius="10"
+                   Padding="8,4"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Start"
+                   Margin="10">
+                <Label Text="{Binding Source={x:Reference this}, Path=Rating}" 
+                       TextColor="White" 
+                       FontSize="12"
+                       FontAttributes="Bold"/>
+            </Frame>
+
+            <StackLayout Grid.Row="1" 
+                         BackgroundColor="#2C3E50"
+                         Padding="10,5"
+                         Spacing="2">
+                <Label Text="{Binding Source={x:Reference this}, Path=Title}" 
+                       TextColor="White"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="1"/>
+
+                <Label Text="{Binding Source={x:Reference this}, Path=Genres}" 
+                       TextColor="#BDC3C7"
+                       FontSize="10"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="1"/>
+            </StackLayout>
+        </Grid>
+    </Frame>
+</ContentView>

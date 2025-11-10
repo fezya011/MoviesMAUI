@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FitnessMAUI.Views.RegisterPage"
+             Title="Регистрация"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+
+            <Image Source="logo.png" 
+                   HeightRequest="100"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20"/>
+
+            <Label Text="Создание аккаунта" 
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <Frame BackgroundColor="#F8F9FA" 
+                   CornerRadius="15" 
+                   Padding="20"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Entry Grid.Column="0" 
+                               Placeholder="Имя" 
+                               Text="{Binding FirstName}"
+                               BackgroundColor="White"/>
+
+                        <Entry Grid.Column="1" 
+                               Placeholder="Фамилия" 
+                               Text="{Binding LastName}"
+                               BackgroundColor="White"/>
+                    </Grid>
+
+                    <Entry Placeholder="Имя пользователя" 
+                           Text="{Binding Username}"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Email" 
+                           Text="{Binding Email}"
+                           Keyboard="Email"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Пароль" 
+                           Text="{Binding Password}"
+                           IsPassword="True"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Подтвердите пароль" 
+                           Text="{Binding ConfirmPassword}"
+                           IsPassword="True"
+                           BackgroundColor="White"/>
+
+                    <Button Text="Зарегистрироваться" 
+                            Command="{Binding RegisterCommand}"
+                            BackgroundColor="#27AE60"
+                            TextColor="White"
+                            HeightRequest="50"
+                            CornerRadius="25"/>
+
+                    <Label Text="{Binding ErrorMessage}" 
+                           TextColor="Red"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding HasError}"/>
+
+                    <Label Text="{Binding SuccessMessage}" 
+                           TextColor="Green"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding HasSuccess}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Назад к входу" 
+                    Command="{Binding NavigateToLoginCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#3498DB"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

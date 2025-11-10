@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:FitnessMAUI.Controls"
+             x:Class="FitnessMAUI.Views.MoviesPage"
+             Title="Все фильмы">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Добавить" Command="{Binding AddMovieCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+        <CollectionView ItemsSource="{Binding Movies}" SelectionMode="Single" SelectedItem="{Binding SelectedMovie}">
+            <CollectionView.Header>
+                <Label Text="Все фильмы" 
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       Margin="15,10"/>
+            </CollectionView.Header>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Удалить" 
+                                           BackgroundColor="Red" 
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteMovieCommand}"
+                                           CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Редактировать" 
+                                           BackgroundColor="Green"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditMovieCommand}"
+                                           CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Grid ColumnSpacing="15" HeightRequest="80" Padding="15,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Frame Grid.Column="0"
+                                   BackgroundColor="#34495E"
+                                   CornerRadius="10"
+                                   Padding="0"
+                                   HeightRequest="60"
+                                   WidthRequest="40">
+                                <Image Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"/>
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding Title}" 
+                                       TextColor="White"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding Genres}" 
+                                       TextColor="#BDC3C7"
+                                       FontSize="12"/>
+                                <Label Text="{Binding ReleaseDate, StringFormat='{0:yyyy}'}" 
+                                       TextColor="#BDC3C7"
+                                       FontSize="12"/>
+                            </VerticalStackLayout>
+
+                            <Frame Grid.Column="2"
+                                   BackgroundColor="#E74C3C"
+                                   CornerRadius="8"
+                                   Padding="10,5">
+                                <Label Text="{Binding Rating}" 
+                                       TextColor="White"
+                                       FontSize="14"
+                                       FontAttributes="Bold"/>
+                            </Frame>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

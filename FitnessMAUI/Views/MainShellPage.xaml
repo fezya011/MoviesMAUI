@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:FitnessMAUI.Controls"
+             x:Class="FitnessMAUI.Views.MainShellPage"
+             Title="Главная">
+
+    <ScrollView>
+        <StackLayout Spacing="0">
+
+            <controls:SearchHeaderView />
+
+            <Label Text="Популярные сейчас" 
+                   Style="{StaticResource SectionTitle}"
+                   Margin="15,20,15,0"/>
+
+            <CollectionView ItemsSource="{Binding PopularMovies}" 
+                           HeightRequest="220"
+                           Margin="15,10">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="15"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:MovieCardView 
+                            Title="{Binding Title}"
+                            Rating="{Binding Rating}"
+                            Genres="{Binding Genres}"
+                            ImageUrl="{Binding ImageUrl}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Остальной контент аналогично с использованием ContentView -->
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FitnessMAUI.Views.LoginPage"
+             Title="Вход"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+
+            <Image Source="logo.png" 
+                   HeightRequest="100"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20"/>
+
+            <Label Text="Добро пожаловать в Kinopoisk" 
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"/>
+
+            <Frame BackgroundColor="#F8F9FA" 
+                   CornerRadius="15" 
+                   Padding="20"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <Entry Placeholder="Имя пользователя" 
+                           Text="{Binding Username}"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Пароль" 
+                           Text="{Binding Password}"
+                           IsPassword="True"
+                           BackgroundColor="White"/>
+
+                    <Button Text="Войти" 
+                            Command="{Binding LoginCommand}"
+                            BackgroundColor="#3498DB"
+                            TextColor="White"
+                            HeightRequest="50"
+                            CornerRadius="25"/>
+
+                    <Label Text="{Binding ErrorMessage}" 
+                           TextColor="Red"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding HasError}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Создать аккаунт" 
+                    Command="{Binding NavigateToRegisterCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#3498DB"
+                    BorderColor="#3498DB"
+                    BorderWidth="1"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

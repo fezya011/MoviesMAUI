@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:FitnessMAUI.Controls"
+             x:Class="FitnessMAUI.Views.SearchPage"
+             Title="Поиск">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="15">
+
+            
+            <Frame BackgroundColor="#34495E" 
+                   CornerRadius="25"
+                   HasShadow="True"
+                   Padding="15">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                    <Image Source="search_icon.png"
+                           HeightRequest="20"
+                           WidthRequest="20"
+                           VerticalOptions="Center"/>
+
+                    <Entry Grid.Column="1"
+                           Placeholder="Поиск фильмов, сериалов, актеров..."
+                           PlaceholderColor="#BDC3C7"
+                           TextColor="White"
+                           BackgroundColor="Transparent"
+                           Text="{Binding SearchQuery}"/>
+
+                    <Button Grid.Column="2"
+                            Text="Найти"
+                            Command="{Binding SearchCommand}"
+                            BackgroundColor="#3498DB"
+                            TextColor="White"
+                            CornerRadius="15"/>
+                </Grid>
+            </Frame>
+
+           
+            <Label Text="Результаты поиска" 
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   IsVisible="{Binding HasSearchResults}"/>
+
+            <CollectionView ItemsSource="{Binding SearchResults}" 
+                           IsVisible="{Binding HasSearchResults}"
+                           EmptyView="Начните поиск чтобы увидеть результаты">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10,5" ColumnDefinitions="Auto,*,Auto">
+                            <Frame Grid.Column="0"
+                                   BackgroundColor="#34495E"
+                                   CornerRadius="10"
+                                   HeightRequest="60"
+                                   WidthRequest="40"
+                                   Padding="0">
+                                <Image Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"/>
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" 
+                                               Spacing="2" 
+                                               Padding="10,0"
+                                               VerticalOptions="Center">
+                                <Label Text="{Binding Title}" 
+                                       TextColor="White"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding Genres}" 
+                                       TextColor="#BDC3C7"
+                                       FontSize="12"/>
+                            </VerticalStackLayout>
+
+                            <Label Grid.Column="2"
+                                   Text="{Binding Rating}"
+                                   TextColor="#E74C3C"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

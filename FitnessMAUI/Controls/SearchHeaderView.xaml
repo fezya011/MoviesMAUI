@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FitnessMAUI.Controls.SearchHeaderView"
+             x:Name="this">
+
+    <Grid Margin="15,20,15,10"
+          ColumnDefinitions="*,Auto,Auto"
+          ColumnSpacing="10">
+
+        <Frame Grid.Column="0"
+               BackgroundColor="#34495E"
+               CornerRadius="25"
+               HasShadow="True"
+               Padding="0">
+            <Grid ColumnSpacing="10" Padding="15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="search_icon.png"
+                       HeightRequest="20"
+                       WidthRequest="20"
+                       VerticalOptions="Center"/>
+
+                <Entry Grid.Column="1"
+                       Placeholder="Поиск фильмов, сериалов, актеров..."
+                       PlaceholderColor="#BDC3C7"
+                       TextColor="White"
+                       BackgroundColor="Transparent"
+                       VerticalOptions="Center"/>
+            </Grid>
+        </Frame>
+
+        <Button Grid.Column="1"
+                Text="+"
+                Command="{Binding Source={x:Reference this}, Path=AddMovieCommand}"
+                BackgroundColor="#3498DB"
+                TextColor="White"
+                FontSize="20"
+                WidthRequest="40"
+                HeightRequest="40"
+                CornerRadius="20"/>
+
+        <Button Grid.Column="2"
+                Text="+С"
+                Command="{Binding Source={x:Reference this}, Path=AddStudioCommand}"
+                BackgroundColor="#E74C3C"
+                TextColor="White"
+                FontSize="16"
+                WidthRequest="40"
+                HeightRequest="40"
+                CornerRadius="20"/>
+
+    </Grid>
+</ContentView>

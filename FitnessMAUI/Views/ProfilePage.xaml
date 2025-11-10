@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FitnessMAUI.Views.ProfilePage"
+             Title="Профиль">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <Frame BackgroundColor="#34495E" 
+                   CornerRadius="20" 
+                   Padding="20"
+                   HorizontalOptions="Fill">
+
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                    <Frame Grid.Column="0"
+                           HeightRequest="80"
+                           WidthRequest="80"
+                           CornerRadius="40"
+                           BackgroundColor="#3498DB"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center">
+                        <Label Text="{Binding Initials}" 
+                               TextColor="White"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Frame>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                        <Label Text="{Binding FullName}" 
+                               TextColor="White"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+
+                        <Label Text="{Binding Username}" 
+                               TextColor="#BDC3C7"
+                               FontSize="14"/>
+
+                        <Label Text="{Binding Email}" 
+                               TextColor="#BDC3C7"
+                               FontSize="14"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+
+            <Frame BackgroundColor="#F8F9FA" 
+                   CornerRadius="15" 
+                   Padding="20"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Редактировать профиль" 
+                           FontSize="16"
+                           FontAttributes="Bold"/>
+
+                    <Entry Placeholder="Имя" 
+                           Text="{Binding FirstName}"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Фамилия" 
+                           Text="{Binding LastName}"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Имя пользователя" 
+                           Text="{Binding Username}"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Email" 
+                           Text="{Binding Email}"
+                           Keyboard="Email"
+                           BackgroundColor="White"/>
+
+                    <Button Text="Сохранить изменения" 
+                            Command="{Binding UpdateProfileCommand}"
+                            BackgroundColor="#3498DB"
+                            TextColor="White"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="#F8F9FA" 
+                   CornerRadius="15" 
+                   Padding="20"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Смена пароля" 
+                           FontSize="16"
+                           FontAttributes="Bold"/>
+
+                    <Entry Placeholder="Текущий пароль" 
+                           Text="{Binding CurrentPassword}"
+                           IsPassword="True"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Новый пароль" 
+                           Text="{Binding NewPassword}"
+                           IsPassword="True"
+                           BackgroundColor="White"/>
+
+                    <Entry Placeholder="Подтвердите новый пароль" 
+                           Text="{Binding ConfirmNewPassword}"
+                           IsPassword="True"
+                           BackgroundColor="White"/>
+
+                    <Button Text="Сменить пароль" 
+                            Command="{Binding ChangePasswordCommand}"
+                            BackgroundColor="#27AE60"
+                            TextColor="White"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Загрузка файлов -->
+            <Frame BackgroundColor="#F8F9FA" 
+                   CornerRadius="15" 
+                   Padding="20"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Загрузка файлов" 
+                           FontSize="16"
+                           FontAttributes="Bold"/>
+
+                    <Button Text="Выбрать файл" 
+                            Command="{Binding PickFileCommand}"
+                            BackgroundColor="#9B59B6"
+                            TextColor="White"/>
+
+                    <Button Text="Сделать фото" 
+                            Command="{Binding TakePhotoCommand}"
+                            BackgroundColor="#E74C3C"
+                            TextColor="White"
+                            IsVisible="{Binding CanTakePhoto}"/>
+
+                    <Label Text="{Binding SelectedFileName}" 
+                           FontSize="14"
+                           IsVisible="{Binding HasSelectedFile}"/>
+
+                    <Button Text="Загрузить файл" 
+                            Command="{Binding UploadFileCommand}"
+                            BackgroundColor="#3498DB"
+                            TextColor="White"
+                            IsVisible="{Binding HasSelectedFile}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

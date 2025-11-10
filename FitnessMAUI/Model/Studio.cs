@@ -14,5 +14,7 @@ namespace FitnessMAUI.Model
         public string DirectorPatronymic { get; set; } = "";
         public string DirectorSurname { get; set; } = "";
         public decimal Rating { get; set; }
+
+        public string DirectorFullName => $"{DirectorSurname} {DirectorName} {DirectorPatronymic}".Trim();
     }
 }
