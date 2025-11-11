@@ -1,38 +1,328 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:FitnessMAUI.Controls"
              x:Class="FitnessMAUI.Views.MainShellPage"
-             Title="Главная">
+             Title="Главная"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#2C3E50</Color>
+            <Color x:Key="SecondaryColor">#E74C3C</Color>
+            <Color x:Key="AccentColor">#3498DB</Color>
+            <Color x:Key="TextPrimary">#FFFFFF</Color>
+            <Color x:Key="TextSecondary">#BDC3C7</Color>
+            <Color x:Key="CardBackground">#34495E</Color>
+            <Color x:Key="PageBackgroundColor">#1A1A2E</Color>
+            <Color x:Key="BorderColor">#4A6572</Color>
+
+            <Style x:Key="TitleText" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="SectionTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="15,20,15,10"/>
+            </Style>
+
+            <Style x:Key="SearchEntry" TargetType="Entry">
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style x:Key="RoundButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="WidthRequest" Value="40"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="5,0,0,0"/>
+            </Style>
+
+            <Style x:Key="MovieCardFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource CardBackground}"/>
+                <Setter Property="CornerRadius" Value="15"/>
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="BorderColor" Value="{StaticResource BorderColor}"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+            <Style x:Key="RatingBadge" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="8,4"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+            <Style x:Key="MovieTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="MovieDetails" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
         <StackLayout Spacing="0">
+            <!--<Grid BackgroundColor="{StaticResource PrimaryColor}" 
+                  HeightRequest="60"
+                  Padding="15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+               
+                
+            </Grid>-->
 
-            <controls:SearchHeaderView />
+            <Frame Margin="15,20,15,10"
+                   Style="{StaticResource MovieCardFrame}"
+                   CornerRadius="25"
+                   Padding="0">
+                <Grid ColumnSpacing="10" 
+                      Padding="15,10"
+                      VerticalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="search_icon.png"
+                           HeightRequest="20"
+                           WidthRequest="20"
+                           VerticalOptions="Center"/>
+
+                    <Entry Grid.Column="1"
+                           Placeholder="Поиск фильмов, сериалов, актеров..."
+                           Style="{StaticResource SearchEntry}"/>
+
+                    <Button Grid.Column="2"
+                            Text="+"
+                            Clicked="AddEditMoviePage"
+                            Style="{StaticResource RoundButton}"/>
+                </Grid>
+            </Frame>
+
+            <Frame Margin="15,0,15,10"
+                   Style="{StaticResource MovieCardFrame}"
+                   Padding="0"
+                   BackgroundColor="Transparent"
+                   HasShadow="False">
+                <Button Text="+ Добавить студию"
+                        Clicked="OpenAddStudioPage"
+                        BackgroundColor="{StaticResource AccentColor}"
+                        TextColor="White"
+                        FontSize="14"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Margin="10"/>
+            </Frame>
+
+
+
 
             <Label Text="Популярные сейчас" 
-                   Style="{StaticResource SectionTitle}"
-                   Margin="15,20,15,0"/>
+                   Style="{StaticResource SectionTitle}"/>
 
-            <CollectionView ItemsSource="{Binding PopularMovies}" 
-                           HeightRequest="220"
-                           Margin="15,10">
+            <CarouselView Margin="15,10" 
+                         HeightRequest="280"
+                         ItemsSource="{Binding PopularMovies}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="Transparent" 
+                               Padding="10"
+                               HasShadow="False">
+                            <Grid RowSpacing="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="200"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Frame Grid.Row="0"
+                                       Style="{StaticResource MovieCardFrame}"
+                                       HeightRequest="200">
+                                    <Image Source="{Binding ImageUrl}"
+                                           Aspect="AspectFill"
+                                           BackgroundColor="{StaticResource CardBackground}"/>
+                                </Frame>
+
+                                <Frame Grid.Row="0"
+                                       Style="{StaticResource RatingBadge}">
+                                    <Label Text="{Binding Rating}" 
+                                           TextColor="White" 
+                                           FontSize="12"
+                                           FontAttributes="Bold"/>
+                                </Frame>
+
+                                <StackLayout Grid.Row="1" Spacing="4" Margin="5,0">
+                                    <Label Text="{Binding Title}" 
+                                           Style="{StaticResource MovieTitle}"/>
+
+                                    <Label Text="{Binding Genres}" 
+                                           Style="{StaticResource MovieDetails}"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+         
+            <Label Text="Скоро выйдет" 
+                   Style="{StaticResource SectionTitle}"/>
+
+            <CollectionView ItemsSource="{Binding ComingSoonMovies}" 
+                           SelectedItem="{Binding SelectedMovie}"
+                           Margin="15,10"
+                           SelectionMode="Single"
+                           HeightRequest="200">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="15"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <controls:MovieCardView 
-                            Title="{Binding Title}"
-                            Rating="{Binding Rating}"
-                            Genres="{Binding Genres}"
-                            ImageUrl="{Binding ImageUrl}"/>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Удалить" 
+                                               BackgroundColor="Red" 
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteComingSoonMovieCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Редактировать" 
+                                               BackgroundColor="Green"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditComingSoonMovieCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Grid WidthRequest="120" HeightRequest="180">
+                                <Frame Style="{StaticResource MovieCardFrame}"
+                                       HeightRequest="180"
+                                       WidthRequest="120">
+                                    <Image Source="{Binding ImageUrl}"
+                                           Aspect="AspectFill"/>
+                                </Frame>
+
+                                <Frame BackgroundColor="{StaticResource AccentColor}"
+                                       CornerRadius="10"
+                                       Padding="8,4"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="End"
+                                       Margin="0,0,0,10">
+                                    <Label Text="{Binding ReleaseDate, StringFormat='{0:dd.MM.yyyy}'}" 
+                                           TextColor="White" 
+                                           FontSize="10"
+                                           FontAttributes="Bold"/>
+                                </Frame>
+                            </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Остальной контент аналогично с использованием ContentView -->
+           
+            <Label Text="Лучшие фильмы" 
+                   Style="{StaticResource SectionTitle}"/>
 
+            <CollectionView ItemsSource="{Binding TopRatedMovies}" 
+                           SelectionMode="Single" 
+                           SelectedItem="{Binding SelectedMovie}"
+                           Margin="15,10">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Удалить" 
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteTopRatedMovieCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Редактировать" 
+                                               BackgroundColor="Green"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditTopRatedMovieCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Grid ColumnSpacing="15" 
+                                  HeightRequest="100"
+                                  Margin="0,5"
+                                  Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Frame Grid.Column="0"
+                                       Style="{StaticResource MovieCardFrame}"
+                                       HeightRequest="90"
+                                       WidthRequest="60">
+                                    <Image Source="{Binding ImageUrl}"
+                                           Aspect="AspectFill"/>
+                                </Frame>
+
+                                <StackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                    <Label Text="{Binding Title}" 
+                                           Style="{StaticResource MovieTitle}"/>
+
+                                    <Label Text="{Binding Genres}" 
+                                           Style="{StaticResource MovieDetails}"/>
+
+                                    <Label Text="{Binding Year}" 
+                                           Style="{StaticResource MovieDetails}"/>
+                                </StackLayout>
+
+                                <StackLayout Grid.Column="2" 
+                                             VerticalOptions="Center"
+                                             HorizontalOptions="End">
+                                    <Frame BackgroundColor="{StaticResource SecondaryColor}"
+                                           CornerRadius="8"
+                                           Padding="10,5">
+                                        <Label Text="{Binding Rating}" 
+                                               TextColor="White" 
+                                               FontSize="14"
+                                               FontAttributes="Bold"/>
+                                    </Frame>
+                                </StackLayout>
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ScrollView>
 </ContentPage>

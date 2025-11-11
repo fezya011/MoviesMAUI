@@ -71,12 +71,7 @@ namespace FitnessMAUI
             }
         }
 
-        private async void OpenAddMoviePage(object sender, EventArgs e)
-        {
-            var addMoviePage = new AddEditMoviePage(dB, 0);
-            await Navigation.PushAsync(addMoviePage);
-            
-        }
+       
 
         private async void EditComingSoonMovieButton(object sender, EventArgs e)
         {
@@ -114,6 +109,10 @@ namespace FitnessMAUI
             await Navigation.PushAsync(addStudioPage);
         }
 
-        
+        private async void AddEditMoviePage(object sender, EventArgs e)
+        {
+            var addMoviePage = new AddEditMoviePage(dB, 0);
+            await Navigation.PushAsync(addMoviePage);
+        }
     }
 }

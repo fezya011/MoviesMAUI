@@ -5,79 +5,198 @@
              xmlns:local="clr-namespace:FitnessMAUI"
              xmlns:views="clr-namespace:FitnessMAUI.Views"
              Title="FitnessMAUI"
-             FlyoutHeaderBehavior="CollapseOnScroll">
+             FlyoutBehavior="Flyout"
+             BackgroundColor="#1A1A2E"
+       FlyoutBackgroundColor="#34495E">
 
     <Shell.Resources>
         <ResourceDictionary>
+
+            <Color x:Key="PrimaryColor">#2C3E50</Color>
+            <Color x:Key="SecondaryColor">#E74C3C</Color>
+            <Color x:Key="AccentColor">#3498DB</Color>
+            <Color x:Key="TextPrimary">#FFFFFF</Color>
+            <Color x:Key="TextSecondary">#BDC3C7</Color>
+            <Color x:Key="CardBackground">#34495E</Color>
+            <Color x:Key="PageBackgroundColor">#1A1A2E</Color>
+            <Color x:Key="BorderColor">#4A6572</Color>
+
+
             <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="#2C3E50"/>
-                <Setter Property="Shell.ForegroundColor" Value="White"/>
-                <Setter Property="Shell.TitleColor" Value="White"/>
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="Shell.TitleColor" Value="{StaticResource TextPrimary}"/>
                 <Setter Property="Shell.DisabledColor" Value="#B4B4B4"/>
-                <Setter Property="Shell.UnselectedColor" Value="#95A5A6"/>
-                <Setter Property="Shell.TabBarBackgroundColor" Value="#2C3E50"/>
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95A5A6"/>
+                <Setter Property="Shell.UnselectedColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource TextSecondary}"/>
             </Style>
+
+            <Style x:Key="FlyoutItemStyle" TargetType="FlyoutItem">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource TextPrimary}"/>
+            </Style>
+
 
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}"/>
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}"/>
             <Style TargetType="Tab" BasedOn="{StaticResource BaseStyle}"/>
+
+
+            <Style x:Key="TitleText" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="SectionTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="15,20,15,10"/>
+            </Style>
+
+
+            <Style x:Key="MovieCardFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource CardBackground}"/>
+                <Setter Property="CornerRadius" Value="15"/>
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="BorderColor" Value="{StaticResource BorderColor}"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+
+            <Style x:Key="RoundButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="WidthRequest" Value="40"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="5,0,0,0"/>
+            </Style>
+
+            <Style x:Key="LogoutButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
         </ResourceDictionary>
     </Shell.Resources>
 
     <Shell.FlyoutHeader>
-        <Grid BackgroundColor="#2C3E50" HeightRequest="120">
-            <VerticalStackLayout VerticalOptions="Center" Padding="20,0">
-                <Label Text="Kinopoisk" 
-                       TextColor="White" 
-                       FontSize="24" 
-                       FontAttributes="Bold"/>
-                <Label Text="{Binding CurrentUser.Username, StringFormat='Вы вошли как: {0}'}" 
-                       TextColor="#BDC3C7"
-                       FontSize="14"/>
-            </VerticalStackLayout>
+        <Grid BackgroundColor="{StaticResource PrimaryColor}" 
+          HeightRequest="160"
+          Padding="0">
+            <Frame Style="{StaticResource MovieCardFrame}"
+               Margin="15,20,15,10"
+               BackgroundColor="{StaticResource CardBackground}"
+               Padding="20">
+                <Grid ColumnDefinitions="60,*" ColumnSpacing="15">
+                    <Image Grid.Column="0"
+                       Source="guy.png"
+                       HeightRequest="120"
+                       WidthRequest="100"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+                    <VerticalStackLayout Grid.Column="1" 
+                                   VerticalOptions="Center" 
+                                   Spacing="8">
+                        <Label Text="Kinopoisk" 
+                           Style="{StaticResource TitleText}"
+                           FontSize="33"
+                           
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" Margin="15,25,15,10"/>
+                        <Label Text="{Binding CurrentUser.Username, StringFormat='Вы вошли как: {0}'}" 
+                           TextColor="{StaticResource TextSecondary}"
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
         </Grid>
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
-        <Grid BackgroundColor="#34495E" HeightRequest="60">
-            <Button Text="Выйти" 
-                    BackgroundColor="#E74C3C"
-                    TextColor="White"
-                    Command="{Binding LogoutCommand}"
-                    Margin="10"/>
+        <Grid BackgroundColor="{StaticResource PrimaryColor}" 
+              HeightRequest="80"
+              Padding="0">
+            <Frame Style="{StaticResource MovieCardFrame}"
+                   Margin="15,10,15,20"
+                   BackgroundColor="{StaticResource CardBackground}"
+                   Padding="0">
+                <Button Text="Выйти" 
+                        Command="{Binding LogoutCommand}"
+                        Style="{StaticResource LogoutButtonStyle}"/>
+            </Frame>
         </Grid>
     </Shell.FlyoutFooter>
 
     <TabBar>
-        <Tab Title="Главная" Icon="home.png">
-            <ShellContent Route="MainPage" ContentTemplate="{DataTemplate views:MainShellPage}"/>
+        <Tab Title="Главная" 
+             Icon="home.png"
+             
+             Style="{StaticResource BaseStyle}">
+            <ShellContent Route="MainPage" 
+                         ContentTemplate="{DataTemplate views:MainShellPage}"/>
         </Tab>
 
-        <Tab Title="Поиск" Icon="search.png">
-            <ShellContent Route="SearchPage" ContentTemplate="{DataTemplate views:SearchPage}"/>
+        <Tab Title="Поиск" 
+             Icon="search.png"
+             Style="{StaticResource BaseStyle}">
+            <ShellContent Route="SearchPage" 
+                         ContentTemplate="{DataTemplate views:SearchPage}"/>
         </Tab>
 
-        <Tab Title="Профиль" Icon="profile.png">
-            <ShellContent Route="ProfilePage" ContentTemplate="{DataTemplate views:ProfilePage}"/>
+        <Tab Title="Профиль" 
+             Icon="profile.png"
+             Style="{StaticResource BaseStyle}">
+            <ShellContent Route="ProfilePage" 
+                         ContentTemplate="{DataTemplate views:ProfilePage}"/>
         </Tab>
     </TabBar>
 
- 
-    <FlyoutItem Title="Фильмы" Icon="movie.png" Route="Movies">
+    <FlyoutItem Title="Главная" 
+                Icon="home.png" 
+                Route="Main"
+                Style="{StaticResource FlyoutItemStyle}">
         <Tab>
-            <ShellContent Route="MoviesPage" ContentTemplate="{DataTemplate views:MoviesPage}"/>
+            <ShellContent Route="MainPage" 
+                         ContentTemplate="{DataTemplate views:MainShellPage}"/>
         </Tab>
     </FlyoutItem>
 
-    <FlyoutItem Title="Студии" Icon="studio.png">
-        <ShellContent Route="StudiosPage" ContentTemplate="{DataTemplate views:StudiosPage}"/>
+    <FlyoutItem Title="Фильмы" 
+                Icon="movie.png" 
+                Route="Movies"
+                Style="{StaticResource FlyoutItemStyle}">
+        <Tab>
+            <ShellContent Route="MoviesPage" 
+                         ContentTemplate="{DataTemplate views:MoviesPage}"/>
+        </Tab>
     </FlyoutItem>
 
-    <FlyoutItem Title="Избранное" Icon="favorite.png">
-        <ShellContent Route="FavoritesPage" ContentTemplate="{DataTemplate views:FavoritesPage}"/>
+    <FlyoutItem Title="Студии" 
+                Icon="studio.png"
+                Style="{StaticResource FlyoutItemStyle}">
+        <ShellContent Route="StudiosPage" 
+                     ContentTemplate="{DataTemplate views:StudiosPage}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Избранное" 
+                Icon="favorite.png"
+                Style="{StaticResource FlyoutItemStyle}">
+        <ShellContent Route="FavoritesPage" 
+                     ContentTemplate="{DataTemplate views:FavoritesPage}"/>
     </FlyoutItem>
 
 </Shell>

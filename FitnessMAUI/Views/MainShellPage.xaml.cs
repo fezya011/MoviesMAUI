@@ -1,9 +1,128 @@
+using FitnessMAUI.db;
+using FitnessMAUI.Model;
+using System.Windows.Input;
+
 namespace FitnessMAUI.Views;
 
 public partial class MainShellPage : ContentPage
 {
-	public MainShellPage()
+    DB dB;
+    private Movie selectedMovie;
+
+    public List<Movie> PopularMovies { get; set; } = new List<Movie>();
+    public List<Movie> ComingSoonMovies { get; set; } = new List<Movie>();
+    public List<Movie> TopRatedMovies { get; set; } = new List<Movie>();
+
+    public Movie SelectedMovie
+    {
+        get => selectedMovie;
+        set
+        {
+            selectedMovie = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand MovieTappedCommand { get; }
+
+    public MainShellPage()
 	{
 		InitializeComponent();
-	}
+        dB = new DB();
+
+        MovieTappedCommand = new Command<Movie>(OnMovieTapped);
+        BindingContext = this;
+    }
+    
+
+
+
+
+    public async void GetListsSort()
+    {
+        PopularMovies = new List<Movie>();
+        ComingSoonMovies = new List<Movie>();
+        TopRatedMovies = new List<Movie>();
+
+        var lists = await dB.GetMovies();
+        foreach (var movie in lists)
+        {
+
+            if (movie.Type == "Популярные")
+                PopularMovies.Add(movie);
+            else if (movie.Type == "Топ рейтинга")
+                TopRatedMovies.Add(movie);
+            else if (movie.Type == "Скоро в прокате")
+                ComingSoonMovies.Add(movie);
+        }
+        OnPropertyChanged(nameof(PopularMovies));
+        OnPropertyChanged(nameof(ComingSoonMovies));
+        OnPropertyChanged(nameof(TopRatedMovies));
+    }
+
+    private async void OnMovieTapped(Movie movie)
+    {
+        if (movie != null)
+        {
+            await DisplayAlert("Фильм выбран", $"Вы выбрали: {movie.Title}", "OK");
+        }
+    }
+
+
+
+    private async void EditComingSoonMovieButton(object sender, EventArgs e)
+    {
+        var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
+        await Navigation.PushAsync(editMoviePage);
+
+    }
+    private async void EditTopRatedMovieButton(object sender, EventArgs e)
+    {
+        var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
+        await Navigation.PushAsync(editMoviePage);
+
+    }
+
+    protected override void OnAppearing()
+    {
+        GetListsSort();
+    }
+
+    private void DeleteComingSoonMovieButton(object sender, EventArgs e)
+    {
+        dB.DeleteMovieAsync(SelectedMovie);
+        GetListsSort();
+    }
+
+    private void DeleteTopRatedMovieButton(object sender, EventArgs e)
+    {
+        dB.DeleteMovieAsync(SelectedMovie);
+        GetListsSort();
+    }
+
+    private async void OpenAddStudioPage(object sender, EventArgs e)
+    {
+        var addStudioPage = new AddStudioPage(dB);
+        await Navigation.PushAsync(addStudioPage);
+    }
+
+    private async void AddEditMoviePage(object sender, EventArgs e)
+    {
+        var addMoviePage = new AddEditMoviePage(dB, 0);
+        await Navigation.PushAsync(addMoviePage);
+    }
+
+    private async void qwerty123(object sender, EventArgs e)
+    {
+        var studioPage = new StudiosPage();
+        await Navigation.PushAsync(studioPage);
+    }
+
+    private void OnBurgerMenuClicked(object sender, EventArgs e)
+    {
+        if (App.Current.MainPage is Shell shell)
+        {
+            shell.FlyoutIsPresented = !shell.FlyoutIsPresented;
+        }
+    }
 }

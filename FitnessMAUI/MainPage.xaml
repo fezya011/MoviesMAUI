@@ -76,8 +76,8 @@
                            
                            VerticalOptions="Center"/>
                     <Button Grid.Column="2"
-                            Text="+"
-                            Clicked="OpenAddMoviePage"
+                            Text="+1"
+                            Clicked="AddEditMoviePage"
                             BackgroundColor="{StaticResource AccentColor}"
                             TextColor="White"
                             FontSize="20"

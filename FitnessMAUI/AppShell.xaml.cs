@@ -17,7 +17,8 @@ namespace FitnessMAUI
             Routing.RegisterRoute(nameof(AddEditMoviePage), typeof(AddEditMoviePage));
             Routing.RegisterRoute(nameof(AddStudioPage), typeof(AddStudioPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));      
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(MainShellPage), typeof(MainShellPage));
         }
          
         protected override void OnAppearing()
