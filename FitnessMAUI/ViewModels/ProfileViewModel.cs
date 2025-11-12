@@ -187,6 +187,7 @@ namespace FitnessMAUI.ViewModels
             try
             {
                 var fileResult = await FilePicker.Default.PickAsync();
+                
                 if (fileResult != null)
                 {
                     _selectedFile = fileResult;

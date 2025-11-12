@@ -61,18 +61,18 @@
 
 
                 <Frame HeightRequest="200" 
-                       WidthRequest="150" 
-                       HorizontalOptions="Center"
-                       Padding="0"
-                       BackgroundColor="LightGray">
-                    <Image x:Name="MovieImage" 
-                           Aspect="AspectFill" />
+       WidthRequest="150" 
+       HorizontalOptions="Center"
+       Padding="0"
+       BackgroundColor="LightGray">
+                    <Image Source="{Binding SelectedImage}"
+           Aspect="AspectFill" />
                 </Frame>
 
 
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                     <Button Text="Выбрать фото" 
-                            x:Name="SelectImageButton" />
+                            Clicked="ClickAddPhoto" />
                     <Button Text="Сделать фото" 
                             x:Name="TakePhotoButton" />
                 </HorizontalStackLayout>

@@ -6,8 +6,7 @@
              xmlns:views="clr-namespace:FitnessMAUI.Views"
              Title="FitnessMAUI"
              FlyoutBehavior="Flyout"
-             BackgroundColor="#1A1A2E"
-       FlyoutBackgroundColor="#34495E">
+             BackgroundColor="#1A1A2E">
 
     <Shell.Resources>
         <ResourceDictionary>
@@ -36,6 +35,7 @@
 
             <Style x:Key="FlyoutItemStyle" TargetType="FlyoutItem">
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="Shell.TitleColor" Value="{StaticResource TextPrimary}"/>
             </Style>
 
 
@@ -166,12 +166,14 @@
     </TabBar>
 
     <FlyoutItem Title="Главная" 
-                Icon="home.png" 
+                Icon="home.png"
+                
                 Route="Main"
                 Style="{StaticResource FlyoutItemStyle}">
         <Tab>
             <ShellContent Route="MainPage" 
-                         ContentTemplate="{DataTemplate views:MainShellPage}"/>
+                         ContentTemplate="{DataTemplate views:MainShellPage}"
+                          />
         </Tab>
     </FlyoutItem>
 
