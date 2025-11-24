@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +10,7 @@ namespace FitnessMAUI.db
 {
     public class DB
     {
+        
         int movieAutoIncrement = 1;
         int studioAutoIncrement = 1;
         int userAutoIncrement = 1;
@@ -21,6 +21,7 @@ namespace FitnessMAUI.db
 
         string filename = Path.Combine(FileSystem.Current.AppDataDirectory, "db4.bin");
         string usersFilename = Path.Combine(FileSystem.Current.AppDataDirectory, "users_db.bin");
+        string userMoviesFilename = Path.Combine(FileSystem.Current.AppDataDirectory, "user_movies_db.bin");
 
         public User CurrentUser { get; private set; }
         public bool IsAuthenticated => CurrentUser != null;
@@ -29,6 +30,7 @@ namespace FitnessMAUI.db
         {
             InitializeAsync();
             InitializeUsersAsync();
+            InitializeUserMoviesAsync();
         }
 
         private async void InitializeAsync()
@@ -61,59 +63,31 @@ namespace FitnessMAUI.db
             }
         }
 
-
-        public async Task<string> PickAndSaveFileAsync()
+        private async void InitializeUserMoviesAsync()
         {
+            if (!File.Exists(userMoviesFilename))
+                return;
+
             try
             {
-                var fileResult = await FilePicker.Default.PickAsync();
-                if (fileResult != null)
-                {
-                    return fileResult.FileName;
-                }
+                await LoadUserMoviesDataAsync();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Ошибка выбора файла: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Ошибка загрузки пользовательских фильмов: {ex.Message}");
             }
-
-            return null;
         }
 
-        public async Task<string> TakePhotoAsync()
-        {
-            try
-            {
-                if (MediaPicker.Default.IsCaptureSupported)
-                {
-                    var photo = await MediaPicker.Default.CapturePhotoAsync();
-                    if (photo != null)
-                    {
-                        return photo.FileName;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Ошибка съемки фото: {ex.Message}");
-            }
-
-            return null;
-        }
-
-        
         public async Task<string> SaveFileAsync(FileResult fileResult)
         {
             try
             {
                 if (fileResult != null)
                 {
-                    
                     var filePath = Path.Combine(FileSystem.Current.AppDataDirectory, "uploads");
                     if (!Directory.Exists(filePath))
                         Directory.CreateDirectory(filePath);
 
-                    
                     var fileName = $"{DateTime.Now:yyyyMMdd_HHmmss}_{fileResult.FileName}";
                     var targetFile = Path.Combine(filePath, fileName);
 
@@ -183,7 +157,6 @@ namespace FitnessMAUI.db
             var existingUser = users.FirstOrDefault(u => u.Id == updatedUser.Id);
             if (existingUser != null)
             {
-
                 if (users.Any(u => u.Id != updatedUser.Id && (u.Username == updatedUser.Username || u.Email == updatedUser.Email)))
                     return false;
 
@@ -191,7 +164,6 @@ namespace FitnessMAUI.db
                 existingUser.Email = updatedUser.Email;
                 existingUser.FirstName = updatedUser.FirstName;
                 existingUser.LastName = updatedUser.LastName;
-
 
                 if (CurrentUser?.Id == updatedUser.Id)
                 {
@@ -311,6 +283,39 @@ namespace FitnessMAUI.db
             }
         }
 
+        private async Task LoadUserMoviesDataAsync()
+        {
+            if (!File.Exists(userMoviesFilename))
+                return;
+
+            using (var fs = File.OpenRead(userMoviesFilename))
+            using (var br = new BinaryReader(fs))
+            {
+                if (fs.Length == 0)
+                    return;
+
+                int count = br.ReadInt32();
+
+                for (int i = 0; i < count; i++)
+                {
+                    Movie movie = new Movie();
+                    movie.Id = br.ReadInt32();
+                    movie.Title = br.ReadString();
+                    movie.Rating = br.ReadDecimal();
+                    movie.Genres = br.ReadString();
+                    movie.ImageUrl = br.ReadString();
+                    movie.StudioId = br.ReadInt32();
+                    movie.ReleaseDate = new DateTime(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
+                    movie.Type = br.ReadString();
+                    movie.UserId = br.ReadInt32(); 
+                    movies.Add(movie);
+
+                    if (movie.Id >= movieAutoIncrement)
+                        movieAutoIncrement = movie.Id + 1;
+                }
+            }
+        }
+
         public async Task SaveDataAsync()
         {
             await Task.Delay(500);
@@ -319,8 +324,10 @@ namespace FitnessMAUI.db
                 using (var fs = File.Create(filename))
                 using (var bw = new BinaryWriter(fs))
                 {
-                    bw.Write(movies.Count);
-                    foreach (var movie in movies)
+                    
+                    var generalMovies = movies.Where(m => m.UserId == 0).ToList();
+                    bw.Write(generalMovies.Count);
+                    foreach (var movie in generalMovies)
                     {
                         bw.Write(movie.Id);
                         bw.Write(movie.Title);
@@ -345,10 +352,47 @@ namespace FitnessMAUI.db
                         bw.Write(studio.Rating);
                     }
                 }
+
+                
+                await SaveUserMoviesDataAsync();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка: {ex.Message}");
+                throw;
+            }
+        }
+
+        private async Task SaveUserMoviesDataAsync()
+        {
+            await Task.Delay(500);
+            try
+            {
+                using (var fs = File.Create(userMoviesFilename))
+                using (var bw = new BinaryWriter(fs))
+                {
+                    
+                    var userMovies = movies.Where(m => m.UserId > 0).ToList();
+                    bw.Write(userMovies.Count);
+                    foreach (var movie in userMovies)
+                    {
+                        bw.Write(movie.Id);
+                        bw.Write(movie.Title);
+                        bw.Write(movie.Rating);
+                        bw.Write(movie.Genres);
+                        bw.Write(movie.ImageUrl);
+                        bw.Write(movie.StudioId);
+                        bw.Write(movie.ReleaseDate.Year);
+                        bw.Write(movie.ReleaseDate.Month);
+                        bw.Write(movie.ReleaseDate.Day);
+                        bw.Write(movie.Type);
+                        bw.Write(movie.UserId); 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка сохранения пользовательских фильмов: {ex.Message}");
                 throw;
             }
         }
@@ -392,6 +436,14 @@ namespace FitnessMAUI.db
             movie.ImageUrl = tempMovie.ImageUrl;
             movie.ReleaseDate = tempMovie.ReleaseDate;
             movie.Type = tempMovie.Type;
+            movie.StudioId = tempMovie.StudioId;
+
+            
+            if (IsAuthenticated)
+            {
+                movie.UserId = CurrentUser.Id;
+            }
+
             movies.Add(movie);
             await SaveDataAsync();
         }
@@ -401,12 +453,12 @@ namespace FitnessMAUI.db
             await Task.Delay(500);
             var existingMovie = movies.FirstOrDefault(m => m.Id == tempMovie);
 
-            Movie movie = new Movie();
             if (existingMovie == null)
             {
-                return movie;
+                return null;
             }
 
+            Movie movie = new Movie();
             movie.Id = existingMovie.Id;
             movie.Title = existingMovie.Title;
             movie.Rating = existingMovie.Rating;
@@ -414,6 +466,8 @@ namespace FitnessMAUI.db
             movie.ImageUrl = existingMovie.ImageUrl;
             movie.ReleaseDate = existingMovie.ReleaseDate;
             movie.Type = existingMovie.Type;
+            movie.StudioId = existingMovie.StudioId;
+            movie.UserId = existingMovie.UserId;
             return movie;
         }
 
@@ -425,17 +479,20 @@ namespace FitnessMAUI.db
 
             if (existingMovie != null)
             {
+               
+                if (existingMovie.UserId > 0 && existingMovie.UserId != CurrentUser?.Id)
+                {
+                    throw new UnauthorizedAccessException("Вы не можете редактировать этот фильм");
+                }
+
                 existingMovie.Title = tempMovie.Title;
                 existingMovie.Rating = tempMovie.Rating;
                 existingMovie.Genres = tempMovie.Genres;
                 existingMovie.ImageUrl = tempMovie.ImageUrl;
                 existingMovie.ReleaseDate = tempMovie.ReleaseDate;
                 existingMovie.Type = tempMovie.Type;
+                existingMovie.StudioId = tempMovie.StudioId;
 
-                await SaveDataAsync();
-            }
-            else
-            {
                 await SaveDataAsync();
             }
         }
@@ -443,12 +500,42 @@ namespace FitnessMAUI.db
         public async Task<List<Movie>> GetMovies()
         {
             await Task.Delay(500);
-            return movies.ToList();
+
+            if (IsAuthenticated)
+            {
+                
+                return movies.Where(m => m.UserId == 0 || m.UserId == CurrentUser.Id).ToList();
+            }
+            else
+            {
+                
+                return movies.Where(m => m.UserId == 0).ToList();
+            }
+        }
+
+        public async Task<List<Movie>> GetUserMovies()
+        {
+            await Task.Delay(500);
+
+            if (!IsAuthenticated)
+            {
+                return new List<Movie>();
+            }
+
+            
+            return movies.Where(m => m.UserId == CurrentUser.Id).ToList();
         }
 
         public async Task DeleteMovieAsync(Movie movie)
         {
             await Task.Delay(500);
+
+            
+            if (movie.UserId > 0 && movie.UserId != CurrentUser?.Id)
+            {
+                throw new UnauthorizedAccessException("Вы не можете удалить этот фильм");
+            }
+
             movies.Remove(movie);
             await SaveDataAsync();
         }

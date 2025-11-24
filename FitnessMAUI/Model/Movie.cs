@@ -18,5 +18,8 @@ namespace FitnessMAUI.Model
         public int StudioId { get; set; }
         public Studio Studio { get; set; }
         public string Type { get; set; } = "";
+
+        public int UserId { get; set; } = 0;
+
     }
 }

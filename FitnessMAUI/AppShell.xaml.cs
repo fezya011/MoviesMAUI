@@ -3,6 +3,7 @@ using FitnessMAUI.Model;
 using FitnessMAUI.ViewModels;
 using FitnessMAUI.Views;
 using FitnessMAUI.VMTools;
+using System.Windows.Input;
 
 namespace FitnessMAUI
 {
@@ -13,25 +14,18 @@ namespace FitnessMAUI
             InitializeComponent();
             BindingContext = new AppShellViewModel();
 
-            
             Routing.RegisterRoute(nameof(AddEditMoviePage), typeof(AddEditMoviePage));
             Routing.RegisterRoute(nameof(AddStudioPage), typeof(AddStudioPage));
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-            Routing.RegisterRoute(nameof(MainShellPage), typeof(MainShellPage));
+            Routing.RegisterRoute(nameof(MoviesPage), typeof(MoviesPage));
+            Routing.RegisterRoute(nameof(FavoritesPage), typeof(FavoritesPage));
+            Routing.RegisterRoute(nameof(StudiosPage), typeof(StudiosPage));
         }
-         
-        protected override void OnAppearing()
+
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-           
-            if (!((AppShellViewModel)BindingContext).IsAuthenticated)
-            {
-                
-                GoToAsync("//LoginPage");
-            }
         }
+ 
     }
 
     public class AppShellViewModel : BaseViewModel
@@ -42,30 +36,69 @@ namespace FitnessMAUI
         public User CurrentUser
         {
             get => _currentUser;
-            set => SetProperty(ref _currentUser, value);
+            set
+            {
+                SetProperty(ref _currentUser, value);
+                OnPropertyChanged(nameof(IsAuthenticated));
+
+            }
         }
+
 
         public bool IsAuthenticated => CurrentUser != null;
 
         public CommandVM LogoutCommand { get; }
+        public CommandVM OpenAllMovies { get; }
+        public CommandVM OpenAllStudios { get; }
+        public CommandVM OpenFavorites { get; }
 
         public AppShellViewModel()
         {
             _database = new DB();
-            LogoutCommand = new CommandVM(ExecuteLogout);
+            LogoutCommand = new CommandVM(async () => await ExecuteLogout());
+            OpenAllMovies = new CommandVM(async () => await OpenAllMoviesAsync());
+            OpenAllStudios = new CommandVM(async () => await OpenAllStudiosAsync());
+            OpenFavorites = new CommandVM(async () => await OpenFavoritesAsync());
             LoadCurrentUser();
         }
 
-        private void LoadCurrentUser()
+        private async void LoadCurrentUser()
         {
-            CurrentUser = _database.GetCurrentUser();
+            try
+            {
+                CurrentUser = _database.GetCurrentUser();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading user: {ex.Message}");
+            }
         }
 
-        private void ExecuteLogout()
+        private async Task ExecuteLogout()
         {
-            _database.Logout();
-            CurrentUser = null;
-            Shell.Current.GoToAsync("//LoginPage");
+            try
+            {
+                _database.Logout();
+                CurrentUser = null;           
+                await Shell.Current.GoToAsync("//" + nameof(LoginPage));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Logout error: {ex.Message}");
+            }
+        }
+
+        private async Task OpenAllMoviesAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(MoviesPage));
+        }
+        private async Task OpenAllStudiosAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(StudiosPage));
+        }
+        private async Task OpenFavoritesAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(FavoritesPage));
         }
     }
 }

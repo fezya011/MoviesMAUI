@@ -17,5 +17,7 @@ namespace FitnessMAUI.Model
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public string FullName => $"{FirstName} {LastName}";
+
+       
     }
 }

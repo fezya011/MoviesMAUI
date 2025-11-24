@@ -2,63 +2,162 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FitnessMAUI.Views.StudiosPage"
-             Title="Студии">
+             Title="Студии"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#2C3E50</Color>
+            <Color x:Key="SecondaryColor">#E74C3C</Color>
+            <Color x:Key="AccentColor">#3498DB</Color>
+            <Color x:Key="TextPrimary">#FFFFFF</Color>
+            <Color x:Key="TextSecondary">#BDC3C7</Color>
+            <Color x:Key="CardBackground">#34495E</Color>
+            <Color x:Key="PageBackgroundColor">#1A1A2E</Color>
+            <Color x:Key="BorderColor">#4A6572</Color>
+
+            <Style x:Key="SectionTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="15,20,15,10"/>
+            </Style>
+
+            <Style x:Key="StudioCardFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource CardBackground}"/>
+                <Setter Property="CornerRadius" Value="15"/>
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="BorderColor" Value="{StaticResource BorderColor}"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+            <Style x:Key="RatingBadge" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <Style x:Key="StudioTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="StudioDetails" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+            </Style>
+
+            <Style x:Key="StudioSubDetails" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="TextColor" Value="#7F8C8D"/>
+            </Style>
+
+            <Style x:Key="CountBadge" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="HasShadow" Value="True"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Добавить" Command="{Binding AddStudioCommand}" />
     </ContentPage.ToolbarItems>
 
     <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
-        <CollectionView ItemsSource="{Binding Studios}" SelectionMode="Single" SelectedItem="{Binding SelectedStudio}">
-            <CollectionView.Header>
-                <Label Text="Все студии" 
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="White"
-                       Margin="15,10"/>
-            </CollectionView.Header>
+        <CollectionView ItemsSource="{Binding Studios}" 
+                      SelectionMode="Single" 
+                      SelectedItem="{Binding SelectedStudio}"
+                      BackgroundColor="Transparent">
+
+            
+
+            <CollectionView.EmptyView>
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
+                    <Label Text="🎭" 
+                           FontSize="48"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Студии не найдены" 
+                           FontSize="18"
+                           TextColor="{StaticResource TextPrimary}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                    <Label Text="Добавьте первую студию, нажав кнопку 'Добавить'"
+                           FontSize="14"
+                           TextColor="{StaticResource TextSecondary}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <SwipeView>
                         <SwipeView.LeftItems>
-                            <SwipeItems>
+                            <SwipeItems Mode="Reveal">
                                 <SwipeItem Text="Удалить" 
-                                           BackgroundColor="Red" 
+                                           BackgroundColor="{StaticResource SecondaryColor}" 
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteStudioCommand}"
                                            CommandParameter="{Binding .}"/>
                             </SwipeItems>
                         </SwipeView.LeftItems>
 
-                        <Grid ColumnSpacing="15" HeightRequest="80" Padding="15,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Reveal">
+                                <SwipeItem Text="Редактировать" 
+                                           BackgroundColor="{StaticResource AccentColor}"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditStudioCommand}"
+                                           CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
 
-                            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
-                                <Label Text="{Binding Name}" 
-                                       TextColor="White"
-                                       FontSize="16"
-                                       FontAttributes="Bold"/>
-                                <Label Text="{Binding DirectorFullName}" 
-                                       TextColor="#BDC3C7"
-                                       FontSize="12"/>
-                            </VerticalStackLayout>
+                        <Frame Style="{StaticResource StudioCardFrame}" Margin="15,5">
+                            <Grid ColumnSpacing="15" 
+                                  HeightRequest="80" 
+                                  Padding="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Frame Grid.Column="1"
-                                   BackgroundColor="#3498DB"
-                                   CornerRadius="8"
-                                   Padding="10,5">
-                                <Label Text="{Binding Rating}" 
-                                       TextColor="White"
-                                       FontSize="14"
-                                       FontAttributes="Bold"/>
-                            </Frame>
-                        </Grid>
+                                <VerticalStackLayout Grid.Column="0" 
+                                                     Spacing="4" 
+                                                     VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" 
+                                           Style="{StaticResource StudioTitle}"/>
+                                    <Label Text="{Binding DirectorFullName}" 
+                                           Style="{StaticResource StudioDetails}"/>
+                                    <Label Text="{Binding Address}" 
+                                           Style="{StaticResource StudioSubDetails}"/>
+                                </VerticalStackLayout>
+
+                                <Frame Grid.Column="1"
+                                       Style="{StaticResource RatingBadge}">
+                                    <Label Text="{Binding Rating, StringFormat='{0:F1}'}" 
+                                           TextColor="White"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="Center"/>
+                                </Frame>
+                            </Grid>
+                        </Frame>
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" Margin="15,10"/>
+            </CollectionView.Footer>
         </CollectionView>
     </RefreshView>
+
+    
 </ContentPage>

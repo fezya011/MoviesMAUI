@@ -63,7 +63,7 @@ namespace FitnessMAUI.ViewModels
                 if (success)
                 {
                     HasError = false;
-                    App.NavigateToMainApp();
+                    await Shell.Current.GoToAsync("//"+nameof(MainPage));
                 }
                 else
                 {
@@ -80,21 +80,7 @@ namespace FitnessMAUI.ViewModels
 
         private async Task ExecuteNavigateToRegister()
         {
-            try
-            {
-                if (Application.Current?.MainPage is NavigationPage navigationPage)
-                {
-                    await navigationPage.Navigation.PushAsync(new RegisterPage());
-                }
-                else
-                {
-                    await Shell.Current.GoToAsync(nameof(RegisterPage));
-                }
-            }
-            catch (Exception ex)
-            {
-                Application.Current.MainPage = new RegisterPage();
-            }
+            await Shell.Current.GoToAsync("//"+nameof(RegisterPage));
         }
 
         public void ResetFields()

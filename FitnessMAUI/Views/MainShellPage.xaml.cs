@@ -112,11 +112,7 @@ public partial class MainShellPage : ContentPage
         await Navigation.PushAsync(addMoviePage);
     }
 
-    private async void qwerty123(object sender, EventArgs e)
-    {
-        var studioPage = new StudiosPage();
-        await Navigation.PushAsync(studioPage);
-    }
+  
 
     private void OnBurgerMenuClicked(object sender, EventArgs e)
     {

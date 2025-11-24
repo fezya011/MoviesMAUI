@@ -7,7 +7,9 @@ namespace FitnessMAUI.Views
         public ProfilePage()
         {
             InitializeComponent();
-            BindingContext = new ProfileViewModel();
+            //BindingContext = new ProfileViewModel();
         }
+
+
     }
 }

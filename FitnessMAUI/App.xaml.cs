@@ -6,22 +6,8 @@ namespace FitnessMAUI
     {
         public App()
         {
-            InitializeComponent();
-
-            
-            MainPage = new LoginPage();
-        }
-
-        public static void NavigateToMainApp()
-        {
-            
-            Current.MainPage = new AppShell();
-        }
-
-        public static void NavigateToLogin()
-        {
-            
-            Current.MainPage = new LoginPage();
+            InitializeComponent();          
+            MainPage = new AppShell();
         }
     }
 }

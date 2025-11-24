@@ -125,6 +125,8 @@
             </Frame>
         </Grid>
     </Shell.FlyoutHeader>
+    
+    
 
     <Shell.FlyoutFooter>
         <Grid BackgroundColor="{StaticResource PrimaryColor}" 
@@ -142,6 +144,12 @@
     </Shell.FlyoutFooter>
 
     <TabBar>
+        <ShellContent Route="LoginPage" ContentTemplate="{ DataTemplate views:LoginPage }"/>
+
+
+    </TabBar>
+
+        <TabBar>
         <Tab Title="Главная" 
              Icon="home.png"
              
@@ -165,40 +173,16 @@
         </Tab>
     </TabBar>
 
-    <FlyoutItem Title="Главная" 
-                Icon="home.png"
-                
-                Route="Main"
-                Style="{StaticResource FlyoutItemStyle}">
-        <Tab>
-            <ShellContent Route="MainPage" 
-                         ContentTemplate="{DataTemplate views:MainShellPage}"
-                          />
-        </Tab>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Фильмы" 
-                Icon="movie.png" 
-                Route="Movies"
-                Style="{StaticResource FlyoutItemStyle}">
-        <Tab>
-            <ShellContent Route="MoviesPage" 
-                         ContentTemplate="{DataTemplate views:MoviesPage}"/>
-        </Tab>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Студии" 
-                Icon="studio.png"
-                Style="{StaticResource FlyoutItemStyle}">
-        <ShellContent Route="StudiosPage" 
-                     ContentTemplate="{DataTemplate views:StudiosPage}"/>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Избранное" 
-                Icon="favorite.png"
-                Style="{StaticResource FlyoutItemStyle}">
-        <ShellContent Route="FavoritesPage" 
-                     ContentTemplate="{DataTemplate views:FavoritesPage}"/>
-    </FlyoutItem>
+    <MenuItem Text="Фильмы" 
+         Command="{Binding OpenAllMovies}">
+    </MenuItem>
+    
+    <MenuItem Text="Студии" 
+         Command="{Binding OpenAllStudios}">
+    </MenuItem>
+    
+    <MenuItem Text="Избранное" 
+         Command="{Binding OpenFavorites}">
+    </MenuItem>
 
 </Shell>
