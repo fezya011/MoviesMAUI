@@ -80,7 +80,7 @@ namespace FitnessMAUI.ViewModels
 
         private async Task ExecuteNavigateToRegister()
         {
-            await Shell.Current.GoToAsync("//"+nameof(RegisterPage));
+            await Shell.Current.GoToAsync("//" + nameof(RegisterPage));
         }
 
         public void ResetFields()

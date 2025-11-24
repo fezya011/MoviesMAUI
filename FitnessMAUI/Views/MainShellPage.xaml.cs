@@ -24,6 +24,8 @@ public partial class MainShellPage : ContentPage
     }
 
     public ICommand MovieTappedCommand { get; }
+    public ICommand DeleteMovieCommand { get; }
+    public ICommand EditMovieCommand { get; }
 
     public MainShellPage()
 	{
@@ -31,12 +33,11 @@ public partial class MainShellPage : ContentPage
         dB = new DB();
 
         MovieTappedCommand = new Command<Movie>(OnMovieTapped);
+        DeleteMovieCommand = new Command<Movie>(DeleteMovie);
+        EditMovieCommand = new Command<Movie>(EditMovie);
         BindingContext = this;
     }
     
-
-
-
 
     public async void GetListsSort()
     {
@@ -68,35 +69,51 @@ public partial class MainShellPage : ContentPage
         }
     }
 
-
-
-    private async void EditComingSoonMovieButton(object sender, EventArgs e)
+    private async void DeleteMovie(Movie movie)
     {
-        var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
-        await Navigation.PushAsync(editMoviePage);
-
+        if (movie != null)
+        {
+            bool result = await Application.Current.MainPage.DisplayAlert(
+                "Удаление",
+                $"Вы уверены, что хотите удалить фильм '{movie.Title}'?",
+                "Да", "Нет");
+            if (result)
+            {
+                try
+                {
+                    await dB.DeleteMovieAsync(SelectedMovie);
+                    GetListsSort();
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Ошибка", $"Не удалось удалить фильм: {ex.Message}", "OK");
+                }
+            }
+        }    
     }
-    private async void EditTopRatedMovieButton(object sender, EventArgs e)
+    private async void EditMovie(Movie movie)
     {
-        var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
-        await Navigation.PushAsync(editMoviePage);
-
+        if (movie != null)
+        {
+            bool result = await Application.Current.MainPage.DisplayAlert(
+                "Редактирование",
+                $"Вы уверены, что хотите отредактировать фильм '{movie.Title}'?",
+                "Да", "Нет");
+            if (result)
+                try
+                {
+                    var editMoviePage = new AddEditMoviePage(dB, SelectedMovie.Id);
+                    await Navigation.PushAsync(editMoviePage);
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Ошибка", $"Не удалось удалить фильм: {ex.Message}", "OK");
+                }
+        }           
     }
 
     protected override void OnAppearing()
     {
-        GetListsSort();
-    }
-
-    private void DeleteComingSoonMovieButton(object sender, EventArgs e)
-    {
-        dB.DeleteMovieAsync(SelectedMovie);
-        GetListsSort();
-    }
-
-    private void DeleteTopRatedMovieButton(object sender, EventArgs e)
-    {
-        dB.DeleteMovieAsync(SelectedMovie);
         GetListsSort();
     }
 
@@ -111,8 +128,6 @@ public partial class MainShellPage : ContentPage
         var addMoviePage = new AddEditMoviePage(dB, 0);
         await Navigation.PushAsync(addMoviePage);
     }
-
-  
 
     private void OnBurgerMenuClicked(object sender, EventArgs e)
     {

@@ -145,8 +145,11 @@
 
     <TabBar>
         <ShellContent Route="LoginPage" ContentTemplate="{ DataTemplate views:LoginPage }"/>
+    </TabBar>
 
 
+    <TabBar>
+        <ShellContent Route="RegisterPage" ContentTemplate="{ DataTemplate views:RegisterPage }"/>
     </TabBar>
 
         <TabBar>

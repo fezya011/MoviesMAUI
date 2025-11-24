@@ -85,17 +85,6 @@
 
     <ScrollView>
         <StackLayout Spacing="0">
-            <!--<Grid BackgroundColor="{StaticResource PrimaryColor}" 
-                  HeightRequest="60"
-                  Padding="15,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-               
-                
-            </Grid>-->
-
             <Frame Margin="15,20,15,10"
                    Style="{StaticResource MovieCardFrame}"
                    CornerRadius="25"
@@ -208,7 +197,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Удалить" 
                                                BackgroundColor="Red" 
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteComingSoonMovieCommand}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteMovieCommand}"
                                                CommandParameter="{Binding .}"/>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
@@ -217,7 +206,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Редактировать" 
                                                BackgroundColor="Green"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditComingSoonMovieCommand}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditMovieCommand}"
                                                CommandParameter="{Binding .}"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>
@@ -263,7 +252,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Удалить" 
                                                BackgroundColor="Red"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteTopRatedMovieCommand}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteMovieCommand}"
                                                CommandParameter="{Binding .}"/>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
@@ -272,7 +261,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Редактировать" 
                                                BackgroundColor="Green"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditTopRatedMovieCommand}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EditMovieCommand}"
                                                CommandParameter="{Binding .}"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>

@@ -5,7 +5,6 @@
              x:Class="FitnessMAUI.Views.SearchPage"
              Title="Поиск"
              BackgroundColor="#1A1A2E">
-
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="15">
 

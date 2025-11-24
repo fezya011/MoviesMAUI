@@ -19,13 +19,13 @@ namespace FitnessMAUI
             Routing.RegisterRoute(nameof(MoviesPage), typeof(MoviesPage));
             Routing.RegisterRoute(nameof(FavoritesPage), typeof(FavoritesPage));
             Routing.RegisterRoute(nameof(StudiosPage), typeof(StudiosPage));
+            
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
         }
- 
     }
 
     public class AppShellViewModel : BaseViewModel

@@ -46,7 +46,6 @@ namespace FitnessMAUI.ViewModels
             EditMovieCommand = new Command<Movie>(async (movie) => await ExecuteEditMovie(movie));
             DeleteMovieCommand = new Command<Movie>(async (movie) => await ExecuteDeleteMovie(movie));
 
-            // Загружаем фильмы при создании
             Task.Run(async () => await LoadMovies());
         }
 
