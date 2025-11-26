@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36429.23 d17.14
+VisualStudioVersion = 17.14.36429.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesMAUI", "FitnessMAUI\MoviesMAUI.csproj", "{1C287646-77DD-465F-AF81-612F5EA3BEAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieAPI", "MovieAPI\MovieAPI.csproj", "{B15CB517-2C31-43CF-90D2-C4F8ADF46F9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,6 +18,10 @@ Global
 		{1C287646-77DD-465F-AF81-612F5EA3BEAD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{1C287646-77DD-465F-AF81-612F5EA3BEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C287646-77DD-465F-AF81-612F5EA3BEAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B15CB517-2C31-43CF-90D2-C4F8ADF46F9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B15CB517-2C31-43CF-90D2-C4F8ADF46F9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B15CB517-2C31-43CF-90D2-C4F8ADF46F9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B15CB517-2C31-43CF-90D2-C4F8ADF46F9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
